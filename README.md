@@ -27,9 +27,11 @@ This template provides a minimal setup to get started with React, TypeScript, an
    ```
 
 2. **Create a pull request**
-  ```bash
-    git branch new-branch
-    ```
+
+   ```bash
+   git branch  new-branch
+   git switch new-branch
+   ```
 
 3. **Install Dependencies:**
 
