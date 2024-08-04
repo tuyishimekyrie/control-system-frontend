@@ -1,32 +1,51 @@
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/4133a91d-a64c-4534-9798-e24cbddaa371/deploy-status)](https://app.netlify.com/sites/staging-control-system/deploys)
 
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This template provides a minimal setup to get started with React, TypeScript, and Vite. It includes Hot Module Replacement (HMR) and some ESLint rules for a smoother development experience.
 
-Currently, two official plugins are available:
+## Technologies Used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React:** A popular JavaScript library for building user interfaces.
+- **TypeScript:** A strongly typed programming language that builds on JavaScript.
+- **Vite:** A modern build tool that provides fast development and optimized builds.
+- **ESLint:** A tool for identifying and fixing problems in JavaScript and TypeScript code.
 
-## Expanding the ESLint configuration
+## Available Plugins
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md): Utilizes Babel for Fast Refresh.
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc): Utilizes SWC for Fast Refresh.
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Getting Started
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+1. **Clone the Repository:**
+
+   ```bash
+   git clone https://github.com/your-username/your-repository.git
+   ```
+
+2. **Create a pull request**
+  ```bash
+    git branch new-branch
+    ```
+
+3. **Install Dependencies:**
+
+   ```bash
+   cd your-repository
+   npm install
+   ```
+
+4. **Run the Development Server:**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Build for Production:**
+
+   ```bash
+   npm run build
+   ```
