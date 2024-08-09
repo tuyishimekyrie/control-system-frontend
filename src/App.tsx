@@ -1,7 +1,8 @@
+import Register from "./pages/Register"
 
 const App = () => {
   return (
-    <div className='bg-black h-screen text-white'>App</div>
+   <Register/>
   )
 }
 
