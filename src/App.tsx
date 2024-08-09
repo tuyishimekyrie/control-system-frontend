@@ -1,9 +1,15 @@
+import { Toaster } from "react-hot-toast";
 import Register from "./pages/Register"
 
 const App = () => {
   return (
-   <Register/>
-  )
+    <>
+      <div>
+        <Toaster />
+      </div>
+      <Register />
+    </>
+  );
 }
 
 export default App
