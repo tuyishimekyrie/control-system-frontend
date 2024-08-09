@@ -1,8 +1,13 @@
+import React from "react";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes/routes";
 
-const App = () => {
+const App: React.FC = () => {
   return (
-    <div className='bg-black h-screen text-white'>App</div>
-  )
-}
+    <React.StrictMode>
+      <RouterProvider router={router} />
+    </React.StrictMode>
+  );
+};
 
-export default App
+export default App;
