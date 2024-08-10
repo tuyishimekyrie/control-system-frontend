@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { postLoginData } from "../services/postData";
 import { loginFormData } from "../types/RegisterForm";
 import { loginSchema } from "../validations/registerSchema";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const {
@@ -16,13 +17,14 @@ const Login = () => {
   } = useForm<loginFormData>({
     resolver: zodResolver(loginSchema),
   });
-
+const navigate = useNavigate()
   const mutation = useMutation({
     mutationFn: postLoginData,
     onSuccess: () => {
       console.log("Login successful!");
       toast.success("Login Successful!");
       reset();
+      navigate("/")
     },
     onError: (error: unknown) => {
       if (axios.isAxiosError(error)) {
