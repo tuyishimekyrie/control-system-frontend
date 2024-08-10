@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import toast,{Toaster} from "react-hot-toast";
 import { postData } from "../services/postData";
 import { schema } from "../validations/registerSchema";
 import axios from "axios";
 import { RegisterFormData } from "../types/RegisterForm";
+import { Link } from "react-router-dom";
 
 
 const Register = () => {
@@ -43,6 +44,7 @@ const Register = () => {
 
   return (
     <div className="flex p-2 h-screen font-poppins">
+      <Toaster />
       <div className="max-h-screen w-[50vw] max-sm:hidden">
         <img
           src="/assets/download16.png"
@@ -63,7 +65,9 @@ const Register = () => {
             placeholder="Name"
             className="border border-slate-400 px-4 rounded-sm py-1 focus:outline-none"
           />
-          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+          {errors.name && (
+            <p className="text-red-500 text-xs">{errors.name.message}</p>
+          )}
 
           <input
             type="email"
@@ -73,7 +77,7 @@ const Register = () => {
             className="border border-slate-400 px-4 rounded-sm py-1 focus:outline-none"
           />
           {errors.email && (
-            <p className="text-red-500">{errors.email.message}</p>
+            <p className="text-red-500 text-xs">{errors.email.message}</p>
           )}
 
           <input
@@ -84,7 +88,7 @@ const Register = () => {
             className="border border-slate-400 px-4 rounded-sm py-1 focus:outline-none"
           />
           {errors.password && (
-            <p className="text-red-500">{errors.password.message}</p>
+            <p className="text-red-500 text-xs">{errors.password.message}</p>
           )}
 
           <button
@@ -102,7 +106,7 @@ const Register = () => {
         <div className="flex gap-2 max-sm:flex-wrap">
           <p className="text-gray-500 text-sm">Already Have An Account?</p>
           <span className="text-blue-700 text-sm underline hover:cursor-pointer">
-            Sign In
+            <Link to="/auth/login">Sign In</Link>
           </span>
         </div>
       </div>
