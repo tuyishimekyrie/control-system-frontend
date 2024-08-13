@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
@@ -6,7 +7,7 @@ import toast from "react-hot-toast";
 import { postLoginData } from "../services/postData";
 import { loginFormData } from "../types/RegisterForm";
 import { loginSchema } from "../validations/registerSchema";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const {
@@ -20,10 +21,13 @@ const Login = () => {
 const navigate = useNavigate()
   const mutation = useMutation({
     mutationFn: postLoginData,
-    onSuccess: () => {
+    onSuccess: (data) => {
       console.log("Login successful!");
       toast.success("Login Successful!");
       reset();
+      // @ts-ignore
+      const token = data.token
+      localStorage.setItem("net-token", JSON.stringify(token));
       navigate("/")
     },
     onError: (error: unknown) => {
@@ -97,7 +101,9 @@ const navigate = useNavigate()
         <div className="flex gap-2 max-sm:flex-wrap">
           <p className="text-gray-500 text-sm">Don't Have An Account?</p>
           <span className="text-blue-700 text-sm underline hover:cursor-pointer">
+            <Link to="/auth/register">
             Create Account
+            </Link>
           </span>
         </div>
       </div>
