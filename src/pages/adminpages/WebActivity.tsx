@@ -1,59 +1,39 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { fetchUserLogs } from "../../services/LogsData";
+import axios from "axios";
+import { format } from "date-fns";
 
 const WebActivity = () => {
-  const activities = [
-    {
-      date: "2024-08-08",
-      name: "Aldo Twizerimana",
-      email: "aldo@example.com",
-      url: "https://example.com",
-      category: "Social Media",
-      action: "Visited",
-      duration: "5 minutes",
-      region: "Rwanda",
-    },
-    {
-      date: "2024-08-08",
-      name: "Aldo Twizerimana",
-      email: "aldo@example.com",
-      url: "https://inappropriate.com",
-      category: "Inappropriate Content",
-      action: "Blocked",
-      duration: "N/A",
-      region: "Rwanda",
-    },
-    {
-      date: "2024-08-08",
-      name: "Aldo Twizerimana",
-      email: "aldo@example.com",
-      url: "https://another-site.com",
-      category: "News",
-      action: "Visited",
-      duration: "10 minutes",
-      region: "Rwanda",
-    },
-    {
-      date: "2024-08-08",
-      name: "Aldo Twizerimana",
-      email: "aldo@example.com",
-      url: "https://another-bad-site.com",
-      category: "Inappropriate Content",
-      action: "Blocked",
-      duration: "N/A",
-      region: "Rwanda",
-    },
-  ];
-
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 20;
+
+  const { data, error, isLoading, isError } = useQuery({
+    queryKey: ["userLogs"],
+    queryFn: fetchUserLogs,
+    staleTime: Infinity,
+  });
+
+  if (isError) {
+    const errorMessage = axios.isAxiosError(error)
+      ? error.response?.data?.message || "Failed to load web activities"
+      : "An unexpected error occurred";
+    toast.error(errorMessage);
+  }
+
+  const activities = data
+    ? [...data].sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      )
+    : [];
 
   const filteredActivities = activities.filter(
     (activity) =>
-      activity.url.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      activity.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
       activity.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      activity.email.toLowerCase().includes(searchTerm.toLowerCase())
+      activity.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      activity.url.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const paginatedActivities = filteredActivities.slice(
@@ -62,6 +42,10 @@ const WebActivity = () => {
   );
 
   const totalPages = Math.ceil(filteredActivities.length / itemsPerPage);
+
+  const formatDate = (dateStr: string) => {
+    return format(new Date(dateStr), "dd-MMM-yyyy");
+  };
 
   return (
     <div className="p-5 pt-0">
@@ -77,7 +61,7 @@ const WebActivity = () => {
         <div className="flex justify-start">
           <input
             type="text"
-            placeholder="Try typing..."
+            placeholder="Search..."
             style={{ backgroundColor: "#1F2A40" }}
             className="p-2 border border-gray-700 rounded-sm focus:outline-none w-30 md:w-40 lg:w-60 text-[14px] text-gray-100"
             value={searchTerm}
@@ -86,80 +70,74 @@ const WebActivity = () => {
         </div>
       </div>
 
-      <div className="overflow-x-scroll min-w-full">
-        <table className="w-full border-collapse">
-          <thead className="text-[15px] font-bold">
-            <tr
-              style={{ backgroundColor: "#1F2A45" }}
-              className="text-gray-300"
-            >
-              <th className="border border-gray-700 p-3 text-left max-w-[150px]">
-                Date
-              </th>
-              <th className="border border-gray-700 p-3 text-left max-w-[200px]">
-                Name
-              </th>
-              <th className="border border-gray-700 p-3 text-left max-w-[250px]">
-                Email Address
-              </th>
-              <th className="border border-gray-700 p-3 text-left max-w-[250px]">
-                URL
-              </th>
-              <th className="border border-gray-700 p-3 text-left max-w-[200px]">
-                Category
-              </th>
-              <th className="border border-gray-700 p-3 text-left max-w-[150px]">
-                Action
-              </th>
-              <th className="border border-gray-700 p-3 text-left max-w-[150px]">
-                Duration
-              </th>
-              <th className="border border-gray-700 p-3 text-left max-w-[150px]">
-                Region
-              </th>
-            </tr>
-          </thead>
-          <tbody className="text-[14px]">
-            {paginatedActivities.map((activity, index) => (
+      <div className="overflow-x-auto max-w-full">
+        {isLoading ? (
+          <p className="text-green-600 text-center">Loading activities...</p>
+        ) : (
+          <table className="min-w-[800px] w-full border-collapse table-fixed">
+            <thead className="text-[15px] font-bold">
               <tr
-                key={index}
-                className="border border-gray-700 text-gray-400"
-                style={{ backgroundColor: "#1F2A40" }}
+                style={{ backgroundColor: "#1F2A45" }}
+                className="text-gray-300"
               >
-                <td className="border border-gray-700 p-3">{activity.date}</td>
-                <td className="border border-gray-700 p-3">{activity.name}</td>
-                <td className="border border-gray-700 p-3">{activity.email}</td>
-                <td className="border border-gray-700 p-3">{activity.url}</td>
-                <td className="border border-gray-700 p-3">
-                  {activity.category}
-                </td>
-                <td className="border border-gray-700 p-3">
-                  {activity.action}
-                </td>
-                <td className="border border-gray-700 p-3">
-                  {activity.duration}
-                </td>
-                <td className="border border-gray-700 p-3">
-                  {activity.region}
-                </td>
+                <th className="border border-gray-700 p-3 text-left whitespace-nowrap max-w-[150px]">
+                  Date
+                </th>
+                <th className="border border-gray-700 p-3 text-left whitespace-nowrap max-w-[200px]">
+                  Name
+                </th>
+                <th className="border border-gray-700 p-3 text-left whitespace-nowrap max-w-[250px]">
+                  Email Address
+                </th>
+                <th className="border border-gray-700 p-3 text-left whitespace-nowrap max-w-[400px]">
+                  URL
+                </th>
+                <th className="border border-gray-700 p-3 text-left whitespace-nowrap max-w-[150px]">
+                  Duration
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="text-[14px]">
+              {paginatedActivities.map((activity, index) => (
+                <tr
+                  key={index}
+                  className="border border-gray-700 text-gray-400"
+                  style={{ backgroundColor: "#1F2A40" }}
+                >
+                  <td className="border border-gray-700 p-3 whitespace-nowrap">
+                    {formatDate(activity.date)}
+                  </td>
+                  <td className="border border-gray-700 p-3 whitespace-nowrap">
+                    {activity.name}
+                  </td>
+                  <td className="border border-gray-700 p-3 whitespace-nowrap">
+                    {activity.email}
+                  </td>
+                  <td className="border border-gray-700 p-3 break-words">
+                    <a
+                      href={activity.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-green-600 underline"
+                    >
+                      {activity.url}
+                    </a>
+                  </td>
+                  <td className="border border-gray-700 p-3 whitespace-nowrap">
+                    {activity.duration}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
       <div className="flex justify-between items-center mt-3">
         <div>
           <p className="text-gray-400 text-[14px]">
-            Page{" "}
-            <span className="text-green-600">
-              {itemsPerPage * (currentPage - 1) + 1}
-            </span>{" "}
-            /{" "}
-            <span className="text-green-600">
-              {Math.min(itemsPerPage * currentPage, filteredActivities.length)}
-            </span>{" "}
-            of{" "}
+            Page <span className="text-green-600">{currentPage}</span> /{" "}
+            <span className="text-green-600">{totalPages}</span> of{" "}
             <span className="text-green-600">{filteredActivities.length}</span>{" "}
             records
           </p>

@@ -9,7 +9,8 @@ const Navbar = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("net-token");
-    if (token) {
+    const user = localStorage.getItem("user");
+    if (token && user) {
       setIsLoggedIn(true);
       toast.success("You are currently logged in");
     } else {
@@ -19,8 +20,8 @@ const Navbar = () => {
 
   const handleAuthAction = () => {
     if (isLoggedIn) {
-      // Clear the token and log out
       localStorage.removeItem("net-token");
+      localStorage.removeItem("user");
       setIsLoggedIn(false);
       toast.success("Logged out successfully");
     } else {
