@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FcNext } from "react-icons/fc";
 import { RiFilter3Fill } from "react-icons/ri";
+import { useQuery } from "@tanstack/react-query";
+import { fetchUsers } from "../../services/postData";
+import { fetchUserLogs } from "../../services/LogsData";
 
 const useOutsideClick = (
   ref: React.RefObject<HTMLDivElement>,
@@ -39,6 +42,33 @@ const Dashboard = () => {
     setSelectedFilter(value);
     setFilterPopupVisible(false);
   };
+
+  const {
+    data: usersData,
+    isLoading: isUsersLoading,
+    isError: isUsersError,
+  } = useQuery({
+    queryKey: ["users"],
+    queryFn: fetchUsers,
+    staleTime: Infinity,
+  });
+
+  const {
+    data: logsData,
+    isLoading: isLogsLoading,
+    isError: isLogsError,
+  } = useQuery({
+    queryKey: ["logs"],
+    queryFn: fetchUserLogs,
+    staleTime: Infinity,
+  });
+
+  if (isUsersError || isLogsError) {
+    return <p className="text-red-600">Error fetching data</p>;
+  }
+
+  const userCount = usersData ? usersData.length : 0;
+  const logCount = logsData ? logsData.length : 0;
 
   return (
     <div
@@ -81,28 +111,42 @@ const Dashboard = () => {
             className="p-6 rounded-sm"
             style={{ backgroundColor: "#1F2A40" }}
           >
-            <div className="flex items-center justify-start mb-4">
+            <div className="flex items-center justify-center mb-4">
               <h2 className="text-[16px] font-bold mr-4">Total Users</h2>
             </div>
-            <div className="h-20"></div>
+            <div className="h-20 flex items-center justify-center text-5xl text-green-600">
+              {isUsersLoading ? (
+                <span className="text-[14px]">Loading...</span>
+              ) : (
+                userCount
+              )}
+            </div>
           </div>
           <div
             className="p-6 rounded-sm"
             style={{ backgroundColor: "#1F2A40" }}
           >
-            <div className="flex items-center justify-start mb-4">
+            <div className="flex items-center justify-center mb-4">
+              <h2 className="text-[16px] font-bold mr-4">Total Logs</h2>
+            </div>
+            <div className="h-20 flex items-center justify-center text-5xl text-green-600">
+              {isLogsLoading ? (
+                <span className="text-[14px]">Loading...</span>
+              ) : (
+                logCount
+              )}
+            </div>
+          </div>
+          <div
+            className="p-6 rounded-sm"
+            style={{ backgroundColor: "#1F2A40" }}
+          >
+            <div className="flex items-center justify-center mb-4">
               <h2 className="text-[16px] font-bold mr-4">Total Blocked</h2>
             </div>
-            <div className="h-20"></div>
-          </div>
-          <div
-            className="p-6 rounded-sm"
-            style={{ backgroundColor: "#1F2A40" }}
-          >
-            <div className="flex items-center justify-start mb-4">
-              <h2 className="text-[16px] font-bold mr-4">Total Deleted</h2>
+            <div className="h-20 flex items-center justify-center text-5xl text-green-600">
+              0
             </div>
-            <div className="h-20"></div>
           </div>
         </div>
 

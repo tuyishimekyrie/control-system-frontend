@@ -5,6 +5,7 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { TbLogout } from "react-icons/tb";
 import { RxHamburgerMenu } from "react-icons/rx";
 import Profile from "../../assets/tim.jpg";
+import useAuth from "../../utils/admin/AuthHook";
 
 interface SidebarProps {
   menuActive: boolean;
@@ -12,6 +13,9 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ menuActive }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
+
+  if (!isAuthenticated) return null;
 
   return (
     <div
@@ -94,6 +98,7 @@ const Sidebar: React.FC<SidebarProps> = ({ menuActive }) => {
                 className={`flex items-center ${
                   isCollapsed ? "justify-center" : "justify-between"
                 } p-4 gap-x-3 w-full text-left hover:bg-green-600`}
+                onClick={logout}
                 data-testid="logout-button"
               >
                 <div className="flex items-center gap-x-2">

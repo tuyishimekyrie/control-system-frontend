@@ -8,10 +8,12 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("net-token")
-    if(token !== null) toast.success("you are currently logged in")
+    const token = localStorage.getItem("net-token");
+    const user = localStorage.getItem("user");
+    if (token !== null && user !== null)
+      toast.success("you are currently logged in");
   }, []);
-  
+
   return (
     <div className="h-screen text-white font-poppins px-14  bg-[url('/assets/Maskgroup.png')] bg-center ">
       <Toaster />

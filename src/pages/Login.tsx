@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
@@ -8,6 +8,7 @@ import { postLoginData } from "../services/postData";
 import { loginFormData } from "../types/RegisterForm";
 import { loginSchema } from "../validations/registerSchema";
 import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../utils/admin/AuthHook";
 
 const Login = () => {
   const {
@@ -18,17 +19,29 @@ const Login = () => {
   } = useForm<loginFormData>({
     resolver: zodResolver(loginSchema),
   });
-const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
+
   const mutation = useMutation({
     mutationFn: postLoginData,
     onSuccess: (data) => {
       console.log("Login successful!");
       toast.success("Login Successful!");
       reset();
-      // @ts-ignore
-      const token = data.token
+      const token = data.token;
       localStorage.setItem("net-token", JSON.stringify(token));
-      navigate("/")
+      localStorage.setItem("user", JSON.stringify(data.user));
+      if (data.user.role === "manager") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     },
     onError: (error: unknown) => {
       if (axios.isAxiosError(error)) {
@@ -60,7 +73,7 @@ const navigate = useNavigate()
         <form
           className="flex flex-col gap-4 my-10 w-full"
           onSubmit={handleSubmit((data) => {
-            console.log("Form data submitted:", data); // Debugging line
+            console.log("Form data submitted:", data);
             mutation.mutate(data);
           })}
         >
@@ -101,9 +114,7 @@ const navigate = useNavigate()
         <div className="flex gap-2 max-sm:flex-wrap">
           <p className="text-gray-500 text-sm">Don't Have An Account?</p>
           <span className="text-blue-700 text-sm underline hover:cursor-pointer">
-            <Link to="/auth/register">
-            Create Account
-            </Link>
+            <Link to="/auth/register">Create Account</Link>
           </span>
         </div>
       </div>
