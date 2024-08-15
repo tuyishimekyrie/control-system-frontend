@@ -8,11 +8,15 @@ import Users from "../pages/adminpages/manageUserRoles";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import Home from "../pages/Home";
+import Test from "../pages/adminpages/Test";
+import AddBlockedURL from "../pages/adminpages/AddBlockedUrls";
+import AddCategory from "../pages/adminpages/AddCategory";
+import AddKeyword from "../pages/adminpages/AddKeyword";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element:<Home/>
+    element: <Home />,
   },
   {
     path: "/auth/register",
@@ -31,6 +35,10 @@ export const router = createBrowserRouter([
       { path: "logs", element: <WebActivity /> },
       { path: "settings", element: <Settings /> },
       { path: "users", element: <Users /> },
+      { path: "filtering", element: <Test /> },
+      { path: "add-blocked-url", element:< AddBlockedURL /> },
+      { path: "add-category", element:< AddCategory /> },
+      { path: "add-keyword", element:< AddKeyword /> },
     ],
   },
 ]);

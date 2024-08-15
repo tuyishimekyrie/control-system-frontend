@@ -25,6 +25,8 @@ const Login = () => {
   React.useEffect(() => {
     if (isAuthenticated) {
       navigate("/");
+    } else {
+      navigate("/auth/login")
     }
   }, [isAuthenticated, navigate]);
 
