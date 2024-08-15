@@ -42,4 +42,10 @@ export const AdminSidebarLinks: SidebarLink[] = [
     icon: RiListSettingsLine,
     link: "/settings",
   },
+  {
+    id: 6,
+    name: "Filtering",
+    icon: RiListSettingsLine,
+    link: "/filtering",
+  },
 ];
