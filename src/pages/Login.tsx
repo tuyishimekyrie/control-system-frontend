@@ -1,4 +1,3 @@
-import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
@@ -8,9 +7,24 @@ import { postLoginData } from "../services/postData";
 import { loginFormData } from "../types/RegisterForm";
 import { loginSchema } from "../validations/registerSchema";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../utils/admin/AuthHook";
+import { useEffect } from "react";
 
 const Login = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("net-token");
+    const user = localStorage.getItem("user");
+
+    if (token && user) {
+      const parsedUser = JSON.parse(user);
+      if (parsedUser.role === "manager") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+    }
+  }, [navigate]);
+
   const {
     register,
     handleSubmit,
@@ -19,14 +33,6 @@ const Login = () => {
   } = useForm<loginFormData>({
     resolver: zodResolver(loginSchema),
   });
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-
-  React.useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated, navigate]);
 
   const mutation = useMutation({
     mutationFn: postLoginData,
