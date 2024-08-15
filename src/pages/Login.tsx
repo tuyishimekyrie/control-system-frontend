@@ -33,7 +33,16 @@ const Login = () => {
   } = useForm<loginFormData>({
     resolver: zodResolver(loginSchema),
   });
-  
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    } else {
+      navigate("/auth/login")
+    }
+  }, [isAuthenticated, navigate]);
 
   const mutation = useMutation({
     mutationFn: postLoginData,
