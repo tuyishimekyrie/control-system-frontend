@@ -6,6 +6,7 @@ import { fetchBlockedWebsite, fetchUsers } from "../../services/postData";
 import { fetchUserLogs } from "../../services/LogsData";
 import TopWebsitesChart from "../../components/AdminComponents/WebTimingChart";
 import { Website } from "../../types/BlockWebsite";
+import { format } from "date-fns";
 
 const useOutsideClick = (
   ref: React.RefObject<HTMLDivElement>,
@@ -18,12 +19,8 @@ const useOutsideClick = (
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside as EventListener);
-    return () =>
-      document.removeEventListener(
-        "mousedown",
-        handleClickOutside as EventListener
-      );
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [ref, handler]);
 };
 
@@ -64,11 +61,13 @@ const Dashboard = () => {
     queryFn: fetchUserLogs,
     staleTime: Infinity,
   });
-  const { data} = useQuery({
+
+  const { data } = useQuery({
     queryKey: ["Website"],
     queryFn: fetchBlockedWebsite,
     staleTime: Infinity,
   });
+
   const blockedData: Website[] = data ?? [];
 
   if (isUsersError || isLogsError) {
@@ -77,6 +76,12 @@ const Dashboard = () => {
 
   const userCount = usersData ? usersData.length : 0;
   const logCount = logsData ? logsData.length : 0;
+
+  const recentBlockedWebsites = blockedData.slice(0, 9);
+
+  const formatDate = (dateStr: string) => {
+    return format(new Date(dateStr), "dd-MMM-yyyy");
+  };
 
   return (
     <div
@@ -153,7 +158,7 @@ const Dashboard = () => {
               <h2 className="text-[16px] font-bold mr-4">Total Blocked</h2>
             </div>
             <div className="h-20 flex items-center justify-center text-5xl text-green-600">
-            {isLogsLoading ? (
+              {isLogsLoading ? (
                 <span className="text-[14px]">Loading...</span>
               ) : (
                 blockedData.length
@@ -171,23 +176,18 @@ const Dashboard = () => {
             <FcNext />
           </div>
           <ul className="text-[14px]">
-            {[
-              "twitter.com",
-              "google.com",
-              "goojara.com",
-              "facebook.com",
-              "alibaba.com",
-              "shoes.com",
-            ].map((domain, index) => (
+            {recentBlockedWebsites.map((website, index) => (
               <li
                 key={index}
                 className="flex justify-between items-center py-2"
               >
-                <div>
-                  <p>{domain}</p>
+                <div className="flex-grow pr-4">
+                  <p className="truncate">{website.name}</p>
                   <span className="text-red-600 text-[14px]">Blocked</span>
                 </div>
-                <span className="text-green-600 text-[14px]">18:16:01</span>
+                <span className="text-green-600 text-[14px]">
+                  {formatDate(website.createdAt)}
+                </span>
               </li>
             ))}
           </ul>

@@ -15,9 +15,7 @@ const fetchFilterData = async (): Promise<FilterData> => {
   const ipAddress = await getPublicIP(); // Fetch the IP address
   console.log("ipAddress", ipAddress);
   const response = await fetch(
-    `${
-      import.meta.env.VITE_API_BASE_URL
-    }/filter-url`
+    `${import.meta.env.VITE_API_BASE_URL}/filter-url`
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -93,23 +91,30 @@ const Test: React.FC = () => {
               Add Keyword
             </Link>
           </div>
-          <table className="min-w-full divide-y divide-gray-700">
-            <thead className="bg-gray-700">
-              <tr>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-400">
-                  Type
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-400">
+          <table className="min-w-full divide-y mt-10">
+            <thead className="text-[15px] font-bold">
+              <tr
+                style={{ backgroundColor: "#1F2A45" }}
+                className="text-gray-300"
+              >
+                <th className="border border-gray-700 p-3 text-left">Type</th>
+                <th className="border border-gray-700 p-3 text-left">
                   Options
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-gray-800 divide-y divide-gray-700">
+            <tbody className="text-[14px]">
               <tr>
-                <td className="px-6 py-4 text-sm font-medium text-gray-400">
+                <td
+                  className="border border-gray-700 text-gray-400 p-3"
+                  style={{ backgroundColor: "#1F2A40" }}
+                >
                   Blocked URLs
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-300">
+                <td
+                  className="border border-gray-700 text-gray-400 p-3"
+                  style={{ backgroundColor: "#1F2A40" }}
+                >
                   <ul className="flex flex-wrap gap-4">
                     {filterData?.blockedURLs?.length ? (
                       filterData.blockedURLs.map((url, index) => (
@@ -124,10 +129,16 @@ const Test: React.FC = () => {
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 text-sm font-medium text-gray-400">
+                <td
+                  className="border border-gray-700 text-gray-400 p-3"
+                  style={{ backgroundColor: "#1F2A40" }}
+                >
                   Categories
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-300">
+                <td
+                  className="border border-gray-700 text-gray-400 p-3"
+                  style={{ backgroundColor: "#1F2A40" }}
+                >
                   <ul className="flex gap-4 flex-wrap">
                     {filterData?.categories?.length ? (
                       filterData.categories.map((category, index) => (
@@ -142,10 +153,16 @@ const Test: React.FC = () => {
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 text-sm font-medium text-gray-400">
+                <td
+                  className="border border-gray-700 text-gray-400 p-3"
+                  style={{ backgroundColor: "#1F2A40" }}
+                >
                   Keywords
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-300">
+                <td
+                  className="border border-gray-700 text-gray-400 p-3"
+                  style={{ backgroundColor: "#1F2A40" }}
+                >
                   <ul className="flex gap-4 flex-wrap">
                     {filterData?.keywords?.length ? (
                       filterData.keywords.map((keyword, index) => (
