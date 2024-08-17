@@ -1,21 +1,12 @@
 import React from "react";
 import RuleItem from "../AdminComponents/RuleItem";
-
-interface Rule {
-  id: number;
-  name: string;
-  action: string;
-  destination: string;
-  site: string;
-  isPublished: boolean;
-}
+import { Website } from "../../types/BlockWebsite";
 
 interface RuleListProps {
-  rules: Rule[];
-  updateRule: (updatedRule: Rule) => void;
+  rules: Website[];
 }
 
-const RuleList: React.FC<RuleListProps> = ({ rules, updateRule }) => {
+const RuleList: React.FC<RuleListProps> = ({ rules}) => {
   return (
     <div
       className="border border-gray-700 rounded text-gray-300"
@@ -28,12 +19,9 @@ const RuleList: React.FC<RuleListProps> = ({ rules, updateRule }) => {
         <span>#</span>
         <span>Name</span>
         <span>Action</span>
-        <span>Destination</span>
-        <span>Site/Category</span>
-        <span>Published</span>
       </div>
       {rules.map((rule) => (
-        <RuleItem key={rule.id} rule={rule} updateRule={updateRule} />
+        <RuleItem key={rule.id} rule={rule}/>
       ))}
     </div>
   );

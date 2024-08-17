@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { FcNext } from "react-icons/fc";
 import { RiFilter3Fill } from "react-icons/ri";
 import { useQuery } from "@tanstack/react-query";
-import { fetchUsers } from "../../services/postData";
+import { fetchBlockedWebsite, fetchUsers } from "../../services/postData";
 import { fetchUserLogs } from "../../services/LogsData";
 import TopWebsitesChart from "../../components/AdminComponents/WebTimingChart";
+import { Website } from "../../types/BlockWebsite";
 
 const useOutsideClick = (
   ref: React.RefObject<HTMLDivElement>,
@@ -63,6 +64,12 @@ const Dashboard = () => {
     queryFn: fetchUserLogs,
     staleTime: Infinity,
   });
+  const { data} = useQuery({
+    queryKey: ["Website"],
+    queryFn: fetchBlockedWebsite,
+    staleTime: Infinity,
+  });
+  const blockedData: Website[] = data ?? [];
 
   if (isUsersError || isLogsError) {
     return <p className="text-red-600">Error fetching data</p>;
@@ -146,7 +153,11 @@ const Dashboard = () => {
               <h2 className="text-[16px] font-bold mr-4">Total Blocked</h2>
             </div>
             <div className="h-20 flex items-center justify-center text-5xl text-green-600">
-              0
+            {isLogsLoading ? (
+                <span className="text-[14px]">Loading...</span>
+              ) : (
+                blockedData.length
+              )}
             </div>
           </div>
         </div>
