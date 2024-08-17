@@ -1,11 +1,16 @@
+import { MdOutlineDangerous } from "react-icons/md";
 const Settings = () => {
   return (
     <div
       className="flex items-center justify-center h-screen"
       style={{ backgroundColor: "#161b2d" }}
     >
-      <div className="text-center bg-gray-800 p-10 rounded-lg shadow-lg">
-        <h1 className=" text-[20px] font-bold text-gray-400 mb-4">
+      <div
+        className="text-center p-10 rounded-lg shadow-lg"
+        style={{ backgroundColor: "#1F2A45" }}
+      >
+        <h1 className=" text-[20px] font-bold text-red-500 mb-4">
+          <MdOutlineDangerous className="inline mr-2 text-[25px]" />
           SETTINGS UNAVAILABLE
         </h1>
         <p className="text-gray-500 mb-6 text-[14px]">

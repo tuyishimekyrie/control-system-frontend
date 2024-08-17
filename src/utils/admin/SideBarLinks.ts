@@ -4,6 +4,7 @@ import { MdMonitorHeart } from "react-icons/md";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { RiListSettingsLine } from "react-icons/ri";
 import { PiUsersThree } from "react-icons/pi";
+import { BsFilterCircle } from "react-icons/bs";
 export type SidebarLink = {
   id: number;
   name: string;
@@ -37,15 +38,15 @@ export const AdminSidebarLinks: SidebarLink[] = [
     link: "/users",
   },
   {
+    id: 6,
+    name: "Filtering",
+    icon: BsFilterCircle,
+    link: "/filtering",
+  },
+  {
     id: 5,
     name: "Settings",
     icon: RiListSettingsLine,
     link: "/settings",
-  },
-  {
-    id: 6,
-    name: "Filtering",
-    icon: RiListSettingsLine,
-    link: "/filtering",
   },
 ];
