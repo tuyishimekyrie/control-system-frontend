@@ -33,7 +33,10 @@ const Test: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-950 text-white">
+      <div
+        className="min-h-screen flex items-center justify-center text-white"
+        style={{ backgroundColor: "#161b2d" }}
+      >
         <span>Loading...</span>
       </div>
     );
@@ -41,7 +44,10 @@ const Test: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-950 text-white">
+      <div
+        className="min-h-screen flex items-center justify-center text-white"
+        style={{ backgroundColor: "#161b2d" }}
+      >
         <span>{(error as Error).message}</span>
       </div>
     );
@@ -49,9 +55,15 @@ const Test: React.FC = () => {
 
   // Safely access properties using optional chaining
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-6">
+    <div
+      className="min-h-screen text-white p-6"
+      style={{ backgroundColor: "#161b2d" }}
+    >
       <div className="max-w-4xl mx-auto">
-        <div className="bg-gray-800 rounded-lg shadow-md p-4">
+        <div
+          className="rounded-lg shadow-md p-4"
+          style={{ backgroundColor: "#161b2d" }}
+        >
           <h2 className="text-xl font-semibold mb-4">Filter Settings</h2>
           {/* Action Buttons */}
           <div className="mb-4 flex gap-4">

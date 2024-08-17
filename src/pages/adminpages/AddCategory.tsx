@@ -12,8 +12,8 @@ const AddCategory: React.FC = () => {
       await axios.post("http://localhost:4000/api/v1/categories", {
         name: category,
       });
-        setSuccess("Category added successfully.");
-           toast.success("category added successfully");
+      setSuccess("Category added successfully.");
+      toast.success("category added successfully");
       setCategory(""); // Clear input
     } catch (err) {
       setError("Failed to add category.");
@@ -21,9 +21,12 @@ const AddCategory: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-6">
-          <div className="max-w-lg mx-auto bg-gray-800 rounded-lg shadow-md p-4">
-              <Toaster/>
+    <div
+      className="min-h-screen text-white p-6"
+      style={{ backgroundColor: "#161b2d" }}
+    >
+      <div className="max-w-lg mx-auto bg-gray-800 rounded-lg shadow-md p-4">
+        <Toaster />
         <h2 className="text-xl font-semibold mb-4">Add Category</h2>
         {error && <p className="text-red-500">{error}</p>}
         {success && <p className="text-green-500">{success}</p>}

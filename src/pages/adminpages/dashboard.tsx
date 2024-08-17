@@ -4,6 +4,7 @@ import { RiFilter3Fill } from "react-icons/ri";
 import { useQuery } from "@tanstack/react-query";
 import { fetchUsers } from "../../services/postData";
 import { fetchUserLogs } from "../../services/LogsData";
+import TopWebsitesChart from "../../components/AdminComponents/WebTimingChart";
 
 const useOutsideClick = (
   ref: React.RefObject<HTMLDivElement>,
@@ -182,17 +183,10 @@ const Dashboard = () => {
         </div>
 
         <div
-          className="p-6 rounded-sm col-span-2"
+          className="rounded-sm col-span-2 text-[14px] text-white p-3 flex justify-center"
           style={{ backgroundColor: "#1F2A40" }}
         >
-          <div className="flex items-center justify-start mb-8">
-            <div className="flex items-center mr-16">
-              <h2 className="text-[16px] font-bold mr-4">
-                Website Tracking Activity
-              </h2>
-            </div>
-          </div>
-          <div className="h-40"></div>
+          <TopWebsitesChart />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 col-span-3">
