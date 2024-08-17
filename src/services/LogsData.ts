@@ -13,3 +13,9 @@ export const fetchUserLogs = async (): Promise<ActivityLog[]> => {
   console.log("API Response:", response.data);
   return response.data;
 };
+
+export const fetchTotalTimeSpentPerWebsite = async () => {
+  const response = await apiClient.get("/user/logs/total-time-per-website");
+  console.log("Web Time Spent:", response.data);
+  return response.data;
+};

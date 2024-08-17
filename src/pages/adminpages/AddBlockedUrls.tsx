@@ -10,8 +10,8 @@ const AddBlockedURL: React.FC = () => {
   const handleAddURL = async () => {
     try {
       await axios.post("http://localhost:4000/api/v1/blocked-urls", { url });
-        setSuccess("URL added successfully.");
-        toast.success("url added successfully")
+      setSuccess("URL added successfully.");
+      toast.success("url added successfully");
       setUrl(""); // Clear input
     } catch (err) {
       setError("Failed to add URL.");
@@ -19,9 +19,12 @@ const AddBlockedURL: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-6">
-          <div className="max-w-lg mx-auto bg-gray-800 rounded-lg shadow-md p-4">
-              <Toaster/>
+    <div
+      className="min-h-screen text-white p-6"
+      style={{ backgroundColor: "#161b2d" }}
+    >
+      <div className="max-w-lg mx-auto bg-gray-800 rounded-lg shadow-md p-4">
+        <Toaster />
         <h2 className="text-xl font-semibold mb-4">Add Blocked URL</h2>
         {error && <p className="text-red-500">{error}</p>}
         {success && <p className="text-green-500">{success}</p>}
