@@ -9,7 +9,7 @@ const AddKeyword: React.FC = () => {
 
   const handleAddKeyword = async () => {
     try {
-      await axios.post("http://localhost:4000/api/v1/keywords", { keyword });
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/keywords`, { keyword });
       setSuccess("Keyword added successfully.");
       toast.success("keyword added successfully");
       setKeyword(""); // Clear input
@@ -32,7 +32,7 @@ const AddKeyword: React.FC = () => {
           type="text"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          className="w-full px-4 py-2 rounded mb-4"
+          className="w-full px-4 py-2 rounded mb-4 text-black"
           placeholder="Enter keyword"
         />
         <button

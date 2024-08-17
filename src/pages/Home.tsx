@@ -15,7 +15,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="h-screen text-white font-poppins px-14  bg-[url('/assets/Maskgroup.png')] bg-center ">
+    <div className="h-screen bg-slate-950900 text-white font-poppins px-14  bg-[url('/assets/Maskgroup.png')] bg-center ">
       <Toaster />
       <Navbar />
       <main className="flex justify-between p-6 pt-14 gap-10">
