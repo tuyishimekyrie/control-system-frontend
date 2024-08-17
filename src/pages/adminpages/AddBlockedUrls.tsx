@@ -9,7 +9,9 @@ const AddBlockedURL: React.FC = () => {
 
   const handleAddURL = async () => {
     try {
-      await axios.post("http://localhost:4000/api/v1/blocked-urls", { url });
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/blocked-urls`, {
+        url,
+      });
       setSuccess("URL added successfully.");
       toast.success("url added successfully");
       setUrl(""); // Clear input
@@ -32,7 +34,7 @@ const AddBlockedURL: React.FC = () => {
           type="text"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          className="w-full px-4 py-2 rounded mb-4"
+          className="w-full px-4 py-2 rounded mb-4 text-black"
           placeholder="Enter URL to block"
         />
         <button

@@ -9,7 +9,7 @@ const AddCategory: React.FC = () => {
 
   const handleAddCategory = async () => {
     try {
-      await axios.post("http://localhost:4000/api/v1/categories", {
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/categories`, {
         name: category,
       });
       setSuccess("Category added successfully.");
@@ -34,7 +34,7 @@ const AddCategory: React.FC = () => {
           type="text"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full px-4 py-2 rounded mb-4"
+          className="w-full px-4 py-2 rounded mb-4 text-black"
           placeholder="Enter category name"
         />
         <button
