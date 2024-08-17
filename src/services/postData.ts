@@ -1,3 +1,4 @@
+import { BlockFormData, Website } from "../types/BlockWebsite";
 import { loginFormData, RegisterFormData } from "../types/RegisterForm";
 import { apiClient } from "./apiClient";
 
@@ -35,5 +36,17 @@ export const postLoginData = async (
 export const fetchUsers = async (): Promise<User[]> => {
   const response = await apiClient.get("/users");
   console.log("Fetched Users:", response.data);
+  return response.data;
+};
+
+
+export const blockWebsite = async (data: BlockFormData): Promise<MutationResponse> => {
+  const response = await apiClient.post("/block", data);
+  return response.data;
+}
+
+export const fetchBlockedWebsite = async (): Promise<Website[]> => {
+  const response = await apiClient.get("/block");
+  console.log("Fetched blockWebsite:", response.data);
   return response.data;
 };
