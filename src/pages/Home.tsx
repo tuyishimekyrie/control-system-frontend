@@ -1,21 +1,53 @@
-import Navbar from "../components/UserComponents/Navbar";
-import heroImage from "/assets/data-protection-business.jpg";
-import { useNavigate } from "react-router-dom";
+// import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../components/UserComponents/Navbar";
+// import { fetchUserLogs } from "../services/LogsData";
+// import { fetchBlockedWebsite } from "../services/postData";
+import useNotifications from "../utils/useNotifications";
+import heroImage from "/assets/data-protection-business.jpg";
+
+export interface ActivityLog {
+  name: string;
+  email: string;
+  url: string;
+  duration: number;
+  timestamp: string; 
+}
 
 const Home = () => {
   const navigate = useNavigate();
 
+  // const { data: blockedData } = useQuery({
+  //   queryKey: ["Website"],
+  //   queryFn: fetchBlockedWebsite,
+  //   staleTime: Infinity,
+  // });
+
+  // const { data: userLogs } = useQuery({
+  //   queryKey: ["userLogs"],
+  //   queryFn: fetchUserLogs,
+  //   staleTime: Infinity,
+  //   refetchInterval: 5000, 
+  // });
+
   useEffect(() => {
     const token = localStorage.getItem("net-token");
     const user = localStorage.getItem("user");
-    if (token !== null && user !== null)
-      toast.success("you are currently logged in");
+    if (token !== null && user !== null) {
+      toast.success("You are currently logged in");
+    }
   }, []);
-
+   useNotifications({
+     title: "Blocked Website Alert",
+     options: {
+       body: "You visited a blocked website",
+       icon: "/path/to/icon.png",
+     },
+   });
   return (
-    <div className="h-screen bg-slate-950900 text-white font-poppins px-14  bg-[url('/assets/Maskgroup.png')] bg-center ">
+    <div className="h-screen bg-slate-950900 text-white font-poppins px-14 bg-[url('/assets/Maskgroup.png')] bg-center">
       <Toaster />
       <Navbar />
       <main className="flex justify-between p-6 pt-14 gap-10">
