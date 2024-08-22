@@ -17,6 +17,7 @@ export type User = {
   email: string;
   username: string;
   role: string;
+  isSubscribed?: string;
 };
 
 export const postData = async (
@@ -49,5 +50,11 @@ export const blockWebsite = async (
 export const fetchBlockedWebsite = async (): Promise<Website[]> => {
   const response = await apiClient.get("/block");
   console.log("Fetched blockWebsite:", response.data);
+  return response.data;
+};
+export const updateSubscription = async (
+  id: string,
+): Promise<MutationResponse> => {
+  const response = await apiClient.patch(`/subscribe/${id}`);
   return response.data;
 };
