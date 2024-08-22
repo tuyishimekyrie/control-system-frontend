@@ -3,7 +3,7 @@ import { useEffect } from "react";
 type NotificationProp = {
   title: string;
   options?: NotificationOptions;
-  duration?: number; 
+  duration?: number;
 };
 
 const useNotifications = ({

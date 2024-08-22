@@ -25,7 +25,7 @@ const WebActivity = () => {
 
   const activities = data
     ? [...data].sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
       )
     : [];
 
@@ -33,12 +33,12 @@ const WebActivity = () => {
     (activity) =>
       activity.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       activity.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      activity.url.toLowerCase().includes(searchTerm.toLowerCase())
+      activity.url.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const paginatedActivities = filteredActivities.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   const totalPages = Math.ceil(filteredActivities.length / itemsPerPage);

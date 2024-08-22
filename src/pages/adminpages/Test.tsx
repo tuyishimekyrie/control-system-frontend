@@ -15,7 +15,7 @@ const fetchFilterData = async (): Promise<FilterData> => {
   const ipAddress = await getPublicIP(); // Fetch the IP address
   console.log("ipAddress", ipAddress);
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}/filter-url`
+    `${import.meta.env.VITE_API_BASE_URL}/filter-url`,
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");

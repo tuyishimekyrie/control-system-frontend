@@ -13,7 +13,7 @@ export interface ActivityLog {
   email: string;
   url: string;
   duration: number;
-  timestamp: string; 
+  timestamp: string;
 }
 
 const Home = () => {
@@ -29,7 +29,7 @@ const Home = () => {
   //   queryKey: ["userLogs"],
   //   queryFn: fetchUserLogs,
   //   staleTime: Infinity,
-  //   refetchInterval: 5000, 
+  //   refetchInterval: 5000,
   // });
 
   useEffect(() => {
@@ -39,13 +39,13 @@ const Home = () => {
       toast.success("You are currently logged in");
     }
   }, []);
-   useNotifications({
-     title: "Blocked Website Alert",
-     options: {
-       body: "You visited a blocked website",
-       icon: "/path/to/icon.png",
-     },
-   });
+  useNotifications({
+    title: "Blocked Website Alert",
+    options: {
+      body: "You visited a blocked website",
+      icon: "/path/to/icon.png",
+    },
+  });
   return (
     <div className="h-screen bg-slate-950900 text-white font-poppins px-14 bg-[url('/assets/Maskgroup.png')] bg-center">
       <Toaster />

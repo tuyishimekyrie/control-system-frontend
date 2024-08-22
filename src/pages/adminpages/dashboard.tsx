@@ -10,7 +10,7 @@ import { format } from "date-fns";
 
 const useOutsideClick = (
   ref: React.RefObject<HTMLDivElement>,
-  handler: () => void
+  handler: () => void,
 ) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

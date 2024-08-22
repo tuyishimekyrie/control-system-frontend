@@ -36,9 +36,9 @@ export const router = createBrowserRouter([
       { path: "settings", element: <Settings /> },
       { path: "users", element: <Users /> },
       { path: "filtering", element: <Test /> },
-      { path: "add-blocked-url", element:< AddBlockedURL /> },
-      { path: "add-category", element:< AddCategory /> },
-      { path: "add-keyword", element:< AddKeyword /> },
+      { path: "add-blocked-url", element: <AddBlockedURL /> },
+      { path: "add-category", element: <AddCategory /> },
+      { path: "add-keyword", element: <AddKeyword /> },
     ],
   },
 ]);

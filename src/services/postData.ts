@@ -20,14 +20,14 @@ export type User = {
 };
 
 export const postData = async (
-  data: RegisterFormData
+  data: RegisterFormData,
 ): Promise<MutationResponse> => {
   const response = await apiClient.post("/auth/register", data);
   return response.data;
 };
 
 export const postLoginData = async (
-  data: loginFormData
+  data: loginFormData,
 ): Promise<MutationResponse> => {
   const response = await apiClient.post("/auth/login", data);
   return response.data;
@@ -39,11 +39,12 @@ export const fetchUsers = async (): Promise<User[]> => {
   return response.data;
 };
 
-
-export const blockWebsite = async (data: BlockFormData): Promise<MutationResponse> => {
+export const blockWebsite = async (
+  data: BlockFormData,
+): Promise<MutationResponse> => {
   const response = await apiClient.post("/block", data);
   return response.data;
-}
+};
 
 export const fetchBlockedWebsite = async (): Promise<Website[]> => {
   const response = await apiClient.get("/block");
