@@ -1,4 +1,3 @@
-
 [![Netlify Status](https://api.netlify.com/api/v1/badges/4133a91d-a64c-4534-9798-e24cbddaa371/deploy-status)](https://app.netlify.com/sites/staging-control-system/deploys)
 
 # React + TypeScript + Vite
@@ -16,7 +15,6 @@ This template provides a minimal setup to get started with React, TypeScript, an
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md): Utilizes Babel for Fast Refresh.
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc): Utilizes SWC for Fast Refresh.
-
 
 ## Getting Started
 

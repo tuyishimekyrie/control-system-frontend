@@ -34,7 +34,6 @@ const Login = () => {
     resolver: zodResolver(loginSchema),
   });
 
-
   const mutation = useMutation({
     mutationFn: postLoginData,
     onSuccess: (data) => {
@@ -59,7 +58,7 @@ const Login = () => {
       } else {
         console.error(
           "An unexpected error occurred:",
-          (error as Error).message
+          (error as Error).message,
         );
         toast.error("An unexpected error occurred, please try again later.");
       }

@@ -1,13 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import toast,{Toaster} from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { postData } from "../services/postData";
 import { schema } from "../validations/registerSchema";
 import axios from "axios";
 import { RegisterFormData } from "../types/RegisterForm";
 import { Link } from "react-router-dom";
-
 
 const Register = () => {
   const {
@@ -35,7 +34,7 @@ const Register = () => {
       } else {
         console.error(
           "An unexpected error occurred:",
-          (error as Error).message
+          (error as Error).message,
         );
         toast.error("An unexpected error occurred, please try again later.");
       }

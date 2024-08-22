@@ -17,7 +17,7 @@ ChartJS.register(
   Legend,
   BarElement,
   CategoryScale,
-  LinearScale
+  LinearScale,
 );
 
 const TopWebsitesChart = () => {

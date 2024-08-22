@@ -1,8 +1,8 @@
-import { blockschema } from '../../validations/blockSchema';
+import { blockschema } from "../../validations/blockSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { BlockFormData } from '../../types/BlockWebsite';
+import { BlockFormData } from "../../types/BlockWebsite";
 import { useForm } from "react-hook-form";
-import { blockWebsite } from '../../services/postData';
+import { blockWebsite } from "../../services/postData";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -33,7 +33,7 @@ function BlockWebsite() {
       } else {
         console.error(
           "An unexpected error occurred:",
-          (error as Error).message
+          (error as Error).message,
         );
         toast.error("An unexpected error occurred, please try again later.");
       }

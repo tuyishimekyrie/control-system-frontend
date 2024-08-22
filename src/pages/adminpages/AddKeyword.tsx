@@ -9,7 +9,9 @@ const AddKeyword: React.FC = () => {
 
   const handleAddKeyword = async () => {
     try {
-      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/keywords`, { keyword });
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/keywords`, {
+        keyword,
+      });
       setSuccess("Keyword added successfully.");
       toast.success("keyword added successfully");
       setKeyword(""); // Clear input
