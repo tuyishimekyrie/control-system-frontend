@@ -1,6 +1,6 @@
 name: Lint codebase
 
-on:  
+on:
   push:
     branches:
       - "main"
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -33,4 +33,3 @@ jobs:
 
       - name: TypeScript type check
         run: npm run type-check
-

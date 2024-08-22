@@ -9,7 +9,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "lint:check": "npx prettier --check . && eslint .",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "lint:write": "npx prettier . --write"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
