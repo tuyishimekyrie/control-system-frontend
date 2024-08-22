@@ -26,15 +26,15 @@ const ManageUserRoles = () => {
   }
 
   const users = data || [];
-  console.log(users)
+  console.log(users);
 
   const filteredUsers = users.filter(
     (user) =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.role.toLowerCase().includes(searchTerm.toLowerCase()) ,
+      user.role.toLowerCase().includes(searchTerm.toLowerCase()),
   );
-  console.log(filteredUsers)
+  console.log(filteredUsers);
 
   const paginatedUsers = filteredUsers.slice(
     (currentPage - 1) * itemsPerPage,
@@ -61,14 +61,15 @@ const ManageUserRoles = () => {
   }, []);
   const onUpdateSubscription = (id: string) => {
     const data = updateSubscription(id);
-    data.then(() => toast.success("User Updated Successfully")).catch((error) => toast.error("error",error))
-
-  }
+    data
+      .then(() => toast.success("User Updated Successfully"))
+      .catch((error) => toast.error("error", error));
+  };
 
   return (
     <div className="p-5 pt-0">
       <div className="flex justify-between items-center mb-10 mt-8">
-        <Toaster/>
+        <Toaster />
         <div>
           <h1 className="text-[25px] font-bold text-gray-400">
             REGISTERED USERS
@@ -176,9 +177,7 @@ const ManageUserRoles = () => {
                         </div>
                         <div
                           className="p-2 hover:bg-green-600 hover:text-white cursor-pointer"
-                          onClick={() =>
-                           onUpdateSubscription(user.id)
-                          }
+                          onClick={() => onUpdateSubscription(user.id)}
                         >
                           Allow
                         </div>
