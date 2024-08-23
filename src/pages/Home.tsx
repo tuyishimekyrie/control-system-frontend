@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/UserComponents/Navbar";
 // import { fetchUserLogs } from "../services/LogsData";
 // import { fetchBlockedWebsite } from "../services/postData";
-import useNotifications from "../utils/useNotifications";
+// import useNotifications from "../utils/useNotifications";
 import heroImage from "/assets/data-protection-business.jpg";
 
 export interface ActivityLog {
@@ -39,13 +39,13 @@ const Home = () => {
       toast.success("You are currently logged in");
     }
   }, []);
-  useNotifications({
-    title: "Blocked Website Alert",
-    options: {
-      body: "You visited a blocked website",
-      icon: "/path/to/icon.png",
-    },
-  });
+  // useNotifications({
+  //   title: "Blocked Website Alert",
+  //   options: {
+  //     body: "You visited a blocked website",
+  //     icon: "/path/to/icon.png",
+  //   },
+  // });
   return (
     <div className="h-screen bg-slate-950900 text-white font-poppins px-14 bg-[url('/assets/Maskgroup.png')] bg-center">
       <Toaster />

@@ -12,7 +12,7 @@ const ManageUserRoles = () => {
   const popupRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = 10;
 
-  const { data, error, isLoading, isError } = useQuery({
+  const { data, error, isLoading, isError, refetch } = useQuery({
     queryKey: ["users"],
     queryFn: fetchUsers,
     staleTime: Infinity,
@@ -62,8 +62,14 @@ const ManageUserRoles = () => {
   const onUpdateSubscription = (id: string) => {
     const data = updateSubscription(id);
     data
-      .then(() => toast.success("User Updated Successfully"))
-      .catch((error) => toast.error("error", error));
+      .then(() => {
+        toast.success("User Updated Successfully");
+        refetch();
+      })
+      .catch((error) => {
+        toast.error("error", error);
+        refetch();
+      });
   };
 
   return (
@@ -147,7 +153,7 @@ const ManageUserRoles = () => {
                       </span>
                     )}
                   </td>
-                  <td className="border border-gray-700 p-3 relative">
+                  <td className="border border-gray-700 pl-3 relative ">
                     <button
                       onClick={() =>
                         setShowPopup(showPopup === index ? null : index)
@@ -159,7 +165,7 @@ const ManageUserRoles = () => {
                     {showPopup === index && (
                       <div
                         ref={popupRef}
-                        className="absolute right-[40%] mt-[3px] w-32 bg-gray-800 text-white rounded shadow-lg z-10"
+                        className="absolute right-[40%] mt-[3px] w-32 bg-gray-800 text-white rounded shadow-lg z-10 "
                       >
                         <div
                           className="p-2 hover:bg-red-600 hover:text-white cursor-pointer"
@@ -179,7 +185,7 @@ const ManageUserRoles = () => {
                           className="p-2 hover:bg-green-600 hover:text-white cursor-pointer"
                           onClick={() => onUpdateSubscription(user.id)}
                         >
-                          Allow
+                          {user.isSubscribed ? "Revoke Access" : "Grant Access"}
                         </div>
                       </div>
                     )}
