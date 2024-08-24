@@ -2,7 +2,7 @@ import { MdOutlineDangerous } from "react-icons/md";
 const Settings = () => {
   return (
     <div
-      className="flex items-center justify-center h-screen"
+      className="flex items-center justify-center mt-40"
       style={{ backgroundColor: "#161b2d" }}
     >
       <div
