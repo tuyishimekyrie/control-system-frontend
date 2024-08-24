@@ -68,7 +68,7 @@ const Login = () => {
 
   return (
     <div className="flex p-2 h-screen font-poppins">
-      <Toaster/>
+      <Toaster />
       <div className="max-h-screen w-[50vw] max-sm:hidden">
         <img
           src="/assets/download16.png"
