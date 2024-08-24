@@ -2,12 +2,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { postLoginData } from "../services/postData";
 import { loginFormData } from "../types/RegisterForm";
 import { loginSchema } from "../validations/registerSchema";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { ColorRing } from "react-loader-spinner";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -67,6 +68,7 @@ const Login = () => {
 
   return (
     <div className="flex p-2 h-screen font-poppins">
+      <Toaster/>
       <div className="max-h-screen w-[50vw] max-sm:hidden">
         <img
           src="/assets/download16.png"
@@ -124,6 +126,19 @@ const Login = () => {
           </span>
         </div>
       </div>
+      {mutation.isPending && (
+        <div className="absolute inset-0 flex items-center justify-center z-50 bg-gray-950 bg-opacity-50">
+          <ColorRing
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="color-ring-loading"
+            wrapperStyle={{}}
+            wrapperClass="color-ring-wrapper"
+            colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+          />
+        </div>
+      )}
     </div>
   );
 };
