@@ -3,7 +3,12 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { PiDotsThreeOutlineLight } from "react-icons/pi";
-import { fetchUsers, updateSubscription } from "../../services/postData";
+import {
+  deleteUser,
+  fetchUsers,
+  updateRole,
+  updateSubscription,
+} from "../../services/postData";
 
 const ManageUserRoles = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -71,7 +76,35 @@ const ManageUserRoles = () => {
         refetch();
       });
   };
-
+  const onDeleteUser = (id: string) => {
+    const data = deleteUser(id);
+    data
+      .then(() => {
+        toast.success("User Deleted Successfully");
+        refetch();
+      })
+      .catch((error) => {
+        toast.error("error", error);
+        refetch();
+      });
+  };
+  const onUpdateRole = (id: string, role: string) => {
+    let data;
+    if (role == "user") {
+      data = updateRole(id, { role: "manager" });
+    } else {
+      data = updateRole(id, { role: "user" });
+    }
+    data
+      .then(() => {
+        toast.success("User Deleted Successfully");
+        refetch();
+      })
+      .catch((error) => {
+        toast.error("error", error);
+        refetch();
+      });
+  };
   return (
     <div className="p-5 pt-0">
       <div className="flex justify-between items-center mb-10 mt-8">
@@ -169,15 +202,13 @@ const ManageUserRoles = () => {
                       >
                         <div
                           className="p-2 hover:bg-red-600 hover:text-white cursor-pointer"
-                          onClick={() => console.log("Delete user", user.name)}
+                          onClick={() => onDeleteUser(user.id)}
                         >
                           Delete
                         </div>
                         <div
                           className="p-2 hover:bg-green-600 hover:text-white cursor-pointer"
-                          onClick={() =>
-                            console.log("Update role for", user.name)
-                          }
+                          onClick={() => onUpdateRole(user.id, user.role)}
                         >
                           Update Role
                         </div>

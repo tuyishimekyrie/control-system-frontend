@@ -20,6 +20,10 @@ export type User = {
   isSubscribed?: string;
 };
 
+export type userRole = {
+  role:string
+}
+
 export const postData = async (
   data: RegisterFormData,
 ): Promise<MutationResponse> => {
@@ -58,3 +62,12 @@ export const updateSubscription = async (
   const response = await apiClient.patch(`/subscribe/${id}`);
   return response.data;
 };
+export const deleteUser = async (id: string):Promise<MutationResponse> => {
+  const response = await apiClient.delete(`/users/${id}`);
+  return response.data
+}
+
+export const updateRole = async (id: string,data:userRole): Promise<MutationResponse> => {
+  const response = await apiClient.put(`/users/${id}`,data);
+  return response.data;
+}

@@ -8,7 +8,7 @@ import { format } from "date-fns";
 const WebActivity = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 20;
+  const itemsPerPage = 7;
 
   const { data, error, isLoading, isError } = useQuery({
     queryKey: ["userLogs"],
@@ -120,7 +120,9 @@ const WebActivity = () => {
                       rel="noopener noreferrer"
                       className="text-green-600 underline"
                     >
-                      {activity.url}
+                      {activity.url.length > 40
+                        ? `${activity.url.substring(0, 25)}...`
+                        : activity.url}
                     </a>
                   </td>
                   <td className="border border-gray-700 p-3 whitespace-nowrap">
