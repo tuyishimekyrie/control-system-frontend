@@ -74,3 +74,8 @@ export const updateRole = async (
   const response = await apiClient.put(`/users/${id}`, data);
   return response.data;
 };
+
+export const unBlockUrl = async (id: string): Promise<MutationResponse> => {
+  const response = await apiClient.delete(`/block/${id}`);
+  return response.data;
+};
