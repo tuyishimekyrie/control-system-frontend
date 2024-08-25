@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const WebFilterRules: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["Website"],
     queryFn: fetchBlockedWebsite,
     staleTime: Infinity,
@@ -16,6 +16,7 @@ const WebFilterRules: React.FC = () => {
 
   const handleModel = () => {
     setShowModal((prevShowModal) => !prevShowModal);
+    refetch();
   };
 
   return (
@@ -60,7 +61,7 @@ const WebFilterRules: React.FC = () => {
               </span>
             </div>
           </div>
-          <RuleList rules={data ?? []} />
+          <RuleList rules={data ?? []} refetch={refetch} />
         </div>
       )}
     </div>

@@ -4,10 +4,15 @@ import { getPublicIP } from "../../utils/admin/ipUtils";
 import { FaPlus } from "react-icons/fa"; // Import icons
 import { Link } from "react-router-dom"; // Import Link component
 
-interface FilterData {
-  categories: string[];
+// Updated interface to reflect the nested structure
+interface CategoryData {
+  category: string;
   keywords: string[];
   blockedURLs: string[];
+}
+
+interface FilterData {
+  categories: CategoryData[];
 }
 
 // Fetch function using fetch
@@ -55,7 +60,6 @@ const Test: React.FC = () => {
     );
   }
 
-  // Safely access properties using optional chaining
   return (
     <div
       className="min-h-screen text-white p-6"
@@ -91,91 +95,67 @@ const Test: React.FC = () => {
               Add Keyword
             </Link>
           </div>
+
           <table className="min-w-full divide-y mt-10">
             <thead className="text-[15px] font-bold">
               <tr
                 style={{ backgroundColor: "#1F2A45" }}
                 className="text-gray-300"
               >
-                <th className="border border-gray-700 p-3 text-left">Type</th>
                 <th className="border border-gray-700 p-3 text-left">
-                  Options
+                  Category
+                </th>
+                <th className="border border-gray-700 p-3 text-left">
+                  Blocked URLs
+                </th>
+                <th className="border border-gray-700 p-3 text-left">
+                  Keywords
                 </th>
               </tr>
             </thead>
             <tbody className="text-[14px]">
-              <tr>
-                <td
-                  className="border border-gray-700 text-gray-400 p-3"
-                  style={{ backgroundColor: "#1F2A40" }}
-                >
-                  Blocked URLs
-                </td>
-                <td
-                  className="border border-gray-700 text-gray-400 p-3"
-                  style={{ backgroundColor: "#1F2A40" }}
-                >
-                  <ul className="flex flex-wrap gap-4">
-                    {filterData?.blockedURLs?.length ? (
-                      filterData.blockedURLs.map((url, index) => (
-                        <li key={index} className="py-1">
-                          {url}
-                        </li>
-                      ))
-                    ) : (
-                      <li>No URLs available</li>
-                    )}
-                  </ul>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  className="border border-gray-700 text-gray-400 p-3"
-                  style={{ backgroundColor: "#1F2A40" }}
-                >
-                  Categories
-                </td>
-                <td
-                  className="border border-gray-700 text-gray-400 p-3"
-                  style={{ backgroundColor: "#1F2A40" }}
-                >
-                  <ul className="flex gap-4 flex-wrap">
-                    {filterData?.categories?.length ? (
-                      filterData.categories.map((category, index) => (
-                        <li key={index} className="py-1">
-                          {category}
-                        </li>
-                      ))
-                    ) : (
-                      <li>No categories available</li>
-                    )}
-                  </ul>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  className="border border-gray-700 text-gray-400 p-3"
-                  style={{ backgroundColor: "#1F2A40" }}
-                >
-                  Keywords
-                </td>
-                <td
-                  className="border border-gray-700 text-gray-400 p-3"
-                  style={{ backgroundColor: "#1F2A40" }}
-                >
-                  <ul className="flex gap-4 flex-wrap">
-                    {filterData?.keywords?.length ? (
-                      filterData.keywords.map((keyword, index) => (
-                        <li key={index} className="py-1">
-                          {keyword}
-                        </li>
-                      ))
-                    ) : (
-                      <li>No keywords available</li>
-                    )}
-                  </ul>
-                </td>
-              </tr>
+              {filterData?.categories?.map((categoryData, index) => (
+                <tr key={index}>
+                  <td
+                    className="border border-gray-700 text-gray-400 p-3"
+                    style={{ backgroundColor: "#1F2A40" }}
+                  >
+                    {categoryData.category}
+                  </td>
+                  <td
+                    className="border border-gray-700 text-gray-400 p-3"
+                    style={{ backgroundColor: "#1F2A40" }}
+                  >
+                    <ul className="flex flex-wrap gap-4">
+                      {categoryData.blockedURLs.length ? (
+                        categoryData.blockedURLs.map((url, index) => (
+                          <li key={index} className="py-1">
+                            {url}
+                          </li>
+                        ))
+                      ) : (
+                        <li>No URLs available</li>
+                      )}
+                    </ul>
+                  </td>
+                  <td
+                    className="border border-gray-700 text-gray-400 p-3"
+                    style={{ backgroundColor: "#1F2A40" }}
+                  >
+                    <ul className="flex flex-wrap gap-4">
+                      {categoryData.keywords.length ? (
+                        categoryData.keywords.map((keyword, index) => (
+                          <li key={index} className="py-1">
+                            {keyword}
+                          </li>
+                        ))
+                      ) : (
+                        <li>No keywords available</li>
+                      )}
+                    </ul>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
