@@ -1,20 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
+interface Category {
+  id: string;
+  name: string;
+}
+
 const AddBlockedURL: React.FC = () => {
   const [url, setUrl] = useState("");
+  const [categoryId, setCategoryId] = useState<string | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/categories`,
+        );
+        setCategories(response.data);
+      } catch (err) {
+        setError("Failed to fetch categories.");
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const handleAddURL = async () => {
     try {
+      if (!categoryId) {
+        setError("Please select a category.");
+        return;
+      }
+
       await axios.post(`${import.meta.env.VITE_API_BASE_URL}/blocked-urls`, {
         url,
+        categoryId,
       });
+
       setSuccess("URL added successfully.");
-      toast.success("url added successfully");
+      toast.success("URL added successfully");
       setUrl(""); // Clear input
+      setCategoryId(null); // Clear selected category
     } catch (err) {
       setError("Failed to add URL.");
     }
@@ -37,6 +67,20 @@ const AddBlockedURL: React.FC = () => {
           className="w-full px-4 py-2 rounded mb-4 text-black"
           placeholder="Enter URL to block"
         />
+        <select
+          value={categoryId || ""}
+          onChange={(e) => setCategoryId(e.target.value)}
+          className="w-full px-4 py-2 rounded mb-4 text-black"
+        >
+          <option value="" disabled>
+            Select Category
+          </option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
         <button
           onClick={handleAddURL}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"

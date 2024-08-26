@@ -25,10 +25,11 @@ const fetchFilterData = async (): Promise<FilterData> => {
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
-  return response.json();
+  const data = await response.json();
+  return { categories: data }; // Wrap the array in an object
 };
 
-const Test: React.FC = () => {
+const FilteringKeyword: React.FC = () => {
   const {
     data: filterData,
     error,
@@ -36,7 +37,10 @@ const Test: React.FC = () => {
   } = useQuery<FilterData>({
     queryKey: ["filterData"],
     queryFn: fetchFilterData,
+    refetchOnWindowFocus: true,
   });
+
+  console.log(filterData);
 
   if (isLoading) {
     return (
@@ -60,6 +64,18 @@ const Test: React.FC = () => {
     );
   }
 
+  if (!filterData || !filterData.categories) {
+    console.log("filterData", filterData);
+    return (
+      <div
+        className="min-h-screen flex items-center justify-center text-white"
+        style={{ backgroundColor: "#161b2d" }}
+      >
+        <span>No data available</span>
+      </div>
+    );
+  }
+
   return (
     <div
       className="min-h-screen text-white p-6"
@@ -74,11 +90,11 @@ const Test: React.FC = () => {
           {/* Action Buttons */}
           <div className="mb-4 flex gap-4">
             <Link
-              to="/admin/add-blocked-url"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center"
+              to="/admin/add-keyword"
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-red-600 flex items-center"
             >
               <FaPlus className="inline mr-2" />
-              Add Blocked URLs
+              Add Keyword
             </Link>
             <Link
               to="/admin/add-category"
@@ -88,11 +104,11 @@ const Test: React.FC = () => {
               Add Category
             </Link>
             <Link
-              to="/admin/add-keyword"
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 flex items-center"
+              to="/admin/add-blocked-url"
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center"
             >
               <FaPlus className="inline mr-2" />
-              Add Keyword
+              Add Blocked URLs
             </Link>
           </div>
 
@@ -164,4 +180,4 @@ const Test: React.FC = () => {
   );
 };
 
-export default Test;
+export default FilteringKeyword;
