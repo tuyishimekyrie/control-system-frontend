@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const WebFilterRules: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
-  
+
   const { data, refetch } = useQuery({
     queryKey: ["Website"],
     queryFn: fetchBlockedWebsite,
