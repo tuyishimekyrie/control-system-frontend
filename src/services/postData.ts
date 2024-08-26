@@ -43,7 +43,11 @@ export const fetchUsers = async (): Promise<User[]> => {
   console.log("Fetched Users:", response.data);
   return response.data;
 };
-
+export const fetchUserByEmail = async (email: string): Promise<User> => {
+  const response = await apiClient.get("/user/" + email);
+  console.log("Fetched Users:", response.data);
+  return response.data;
+};
 export const blockWebsite = async (
   data: BlockFormData,
 ): Promise<MutationResponse> => {
