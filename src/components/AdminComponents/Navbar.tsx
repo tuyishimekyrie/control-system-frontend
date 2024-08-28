@@ -4,7 +4,6 @@ import { IoHelpBuoyOutline, IoNotificationsOutline } from "react-icons/io5";
 import { fetchManagerNotifications } from "../../services/postData";
 import Notifications from "./Notifications";
 
-
 interface NavbarProps {
   title: string;
   onClick: () => void;
@@ -32,9 +31,12 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
           <p className="text-[14px] text-gray-400">Need Help?</p>
         </div>
         <IoNotificationsOutline
-        className="text-[20px] text-gray-400 cursor-pointer"
-        onClick={toggleNotifications}
-      /><span className="text-white bg-green-600 w-5 h-5 flex justify-center items-center rounded-[50%] absolute right-4 top-5">{data?.notificationsNumber}</span>
+          className="text-[20px] text-gray-400 cursor-pointer"
+          onClick={toggleNotifications}
+        />
+        <span className="text-white bg-green-600 w-5 h-5 flex justify-center items-center rounded-[50%] absolute right-4 top-5">
+          {data?.notificationsNumber}
+        </span>
         {showNotifications && data && <Notifications data={data} />}
       </div>
     </div>

@@ -62,17 +62,17 @@ export const fetchBlockedWebsite = async (): Promise<Website[]> => {
   return response.data;
 };
 
-export const fetchManagerNotifications = async (): Promise<responseNotifications> => {
-  let accessToken = localStorage.getItem("net-token") || "";
-  accessToken = accessToken.replace(/^"|"$/g, "");
- console.log(accessToken)
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
+export const fetchManagerNotifications =
+  async (): Promise<responseNotifications> => {
+    let accessToken = localStorage.getItem("net-token") || "";
+    accessToken = accessToken.replace(/^"|"$/g, "");
+    console.log(accessToken);
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+    const response = await apiClient.get("/notifications", { headers });
+    return response.data;
   };
-  const response = await apiClient.get("/notifications", { headers });
-  console.log("Fetched Notifications:+++++++++", response.data);
-  return response.data;
-};
 export const updateSubscription = async (
   id: string,
 ): Promise<MutationResponse> => {
