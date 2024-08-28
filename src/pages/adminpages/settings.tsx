@@ -97,7 +97,8 @@ const Settings: React.FC = () => {
             <strong>Role:</strong> {data?.role}
           </p>
           <p className="text-gray-300 mb-2 text-[14px]">
-            <strong>Subscribed:</strong> {data?.isSubscribed ? "Active" : "Not Active"}
+            <strong>Subscribed:</strong>{" "}
+            {data?.isSubscribed ? "Active" : "Not Active"}
           </p>
         </div>
       </div>
