@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MdOutlineDangerous } from "react-icons/md";
 import { useLocalStorage } from "../../hooks";
 import { fetchUserByEmail } from "../../services/postData";
+import { ColorRing } from "react-loader-spinner";
 
 const Settings: React.FC = () => {
   const { email } = useLocalStorage();
@@ -26,14 +27,16 @@ const Settings: React.FC = () => {
         className="flex items-center justify-center mt-40"
         style={{ backgroundColor: "#161b2d" }}
       >
-        <div
-          className="text-center p-10 rounded-lg shadow-lg"
-          style={{ backgroundColor: "#1F2A45" }}
-        >
-          <h1 className="text-[20px] font-bold text-gray-500 mb-4">
-            <MdOutlineDangerous className="inline mr-2 text-[25px]" />
-            Loading Settings...
-          </h1>
+        <div className="absolute inset-0 flex items-center justify-center z-50 bg-gray-950 bg-opacity-50">
+          <ColorRing
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="color-ring-loading"
+            wrapperStyle={{}}
+            wrapperClass="color-ring-wrapper"
+            colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+          />
         </div>
       </div>
     );
@@ -69,7 +72,7 @@ const Settings: React.FC = () => {
 
   return (
     <div
-      className="flex items-center justify-center mt-40"
+      className="flex items-center justify-center mt-10"
       style={{ backgroundColor: "#161b2d" }}
     >
       <div
@@ -94,7 +97,7 @@ const Settings: React.FC = () => {
             <strong>Role:</strong> {data?.role}
           </p>
           <p className="text-gray-300 mb-2 text-[14px]">
-            <strong>Subscribed:</strong> {data?.isSubscribed ? "Yes" : "No"}
+            <strong>Subscribed:</strong> {data?.isSubscribed ? "Active" : "Not Active"}
           </p>
         </div>
       </div>
