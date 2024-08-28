@@ -13,7 +13,7 @@ const AddCategory: React.FC = () => {
         name: category,
       });
       setSuccess("Category added successfully.");
-      toast.success("category added successfully");
+      toast.success("Category added successfully.");
       setCategory(""); // Clear input
     } catch (err) {
       setError("Failed to add category.");

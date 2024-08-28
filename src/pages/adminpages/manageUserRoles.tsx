@@ -1,8 +1,14 @@
-import { useState, useEffect, useRef } from "react";
-import { PiDotsThreeOutlineLight } from "react-icons/pi";
 import { useQuery } from "@tanstack/react-query";
-import { fetchUsers } from "../../services/postData";
 import axios from "axios";
+import { useEffect, useRef, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { PiDotsThreeOutlineLight } from "react-icons/pi";
+import {
+  deleteUser,
+  fetchUsers,
+  updateRole,
+  updateSubscription,
+} from "../../services/postData";
 
 const ManageUserRoles = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,7 +17,7 @@ const ManageUserRoles = () => {
   const popupRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = 10;
 
-  const { data, error, isLoading, isError } = useQuery({
+  const { data, error, isLoading, isError, refetch } = useQuery({
     queryKey: ["users"],
     queryFn: fetchUsers,
     staleTime: Infinity,
@@ -25,6 +31,7 @@ const ManageUserRoles = () => {
   }
 
   const users = data || [];
+  console.log(users);
 
   const filteredUsers = users.filter(
     (user) =>
@@ -32,6 +39,7 @@ const ManageUserRoles = () => {
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.role.toLowerCase().includes(searchTerm.toLowerCase()),
   );
+  console.log(filteredUsers);
 
   const paginatedUsers = filteredUsers.slice(
     (currentPage - 1) * itemsPerPage,
@@ -56,10 +64,51 @@ const ManageUserRoles = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+  const onUpdateSubscription = (id: string) => {
+    const data = updateSubscription(id);
+    data
+      .then(() => {
+        toast.success("User Updated Successfully");
+        refetch();
+      })
+      .catch((error) => {
+        toast.error("error", error);
+        refetch();
+      });
+  };
+  const onDeleteUser = (id: string) => {
+    const data = deleteUser(id);
+    data
+      .then(() => {
+        toast.success("User Deleted Successfully");
+        refetch();
+      })
+      .catch((error) => {
+        toast.error("error", error);
+        refetch();
+      });
+  };
+  const onUpdateRole = (id: string, role: string) => {
+    let data;
+    if (role == "user") {
+      data = updateRole(id, { role: "manager" });
+    } else {
+      data = updateRole(id, { role: "user" });
+    }
+    data
+      .then(() => {
+        toast.success("User Deleted Successfully");
+        refetch();
+      })
+      .catch((error) => {
+        toast.error("error", error);
+        refetch();
+      });
+  };
   return (
     <div className="p-5 pt-0">
       <div className="flex justify-between items-center mb-10 mt-8">
+        <Toaster />
         <div>
           <h1 className="text-[25px] font-bold text-gray-400">
             REGISTERED USERS
@@ -103,7 +152,10 @@ const ManageUserRoles = () => {
                   Role
                 </th>
                 <th className="border border-gray-700 p-3 text-left max-w-[150px]">
-                  Manage User
+                  Subscribed
+                </th>
+                <th className="border border-gray-700 p-3 text-left max-w-[150px]">
+                  Actions
                 </th>
               </tr>
             </thead>
@@ -123,7 +175,18 @@ const ManageUserRoles = () => {
                   <td className="border border-gray-700 p-3">{user.name}</td>
                   <td className="border border-gray-700 p-3">{user.email}</td>
                   <td className="border border-gray-700 p-3">{user.role}</td>
-                  <td className="border border-gray-700 p-3 relative">
+                  <td className="border border-gray-700 p-3">
+                    {user.isSubscribed ? (
+                      <span className="bg-green-500 text-white px-2 py-1 rounded-full">
+                        Active
+                      </span>
+                    ) : (
+                      <span className="bg-red-500 text-white px-2 py-1 rounded-full">
+                        Not Active
+                      </span>
+                    )}
+                  </td>
+                  <td className="border border-gray-700 pl-3 relative ">
                     <button
                       onClick={() =>
                         setShowPopup(showPopup === index ? null : index)
@@ -135,21 +198,25 @@ const ManageUserRoles = () => {
                     {showPopup === index && (
                       <div
                         ref={popupRef}
-                        className="absolute right-[40%] mt-[3px] w-32 bg-gray-800 text-white rounded shadow-lg z-10"
+                        className="absolute right-[40%] mt-[3px] w-32 bg-gray-800 text-white rounded shadow-lg z-10 "
                       >
                         <div
                           className="p-2 hover:bg-red-600 hover:text-white cursor-pointer"
-                          onClick={() => console.log("Delete user", user.name)}
+                          onClick={() => onDeleteUser(user.id)}
                         >
                           Delete
                         </div>
                         <div
                           className="p-2 hover:bg-green-600 hover:text-white cursor-pointer"
-                          onClick={() =>
-                            console.log("Update role for", user.name)
-                          }
+                          onClick={() => onUpdateRole(user.id, user.role)}
                         >
                           Update Role
+                        </div>
+                        <div
+                          className="p-2 hover:bg-green-600 hover:text-white cursor-pointer"
+                          onClick={() => onUpdateSubscription(user.id)}
+                        >
+                          {user.isSubscribed ? "Revoke Access" : "Grant Access"}
                         </div>
                       </div>
                     )}

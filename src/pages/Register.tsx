@@ -7,6 +7,7 @@ import { schema } from "../validations/registerSchema";
 import axios from "axios";
 import { RegisterFormData } from "../types/RegisterForm";
 import { Link } from "react-router-dom";
+import { ColorRing } from "react-loader-spinner";
 
 const Register = () => {
   const {
@@ -109,6 +110,19 @@ const Register = () => {
           </span>
         </div>
       </div>
+      {mutation.isPending && (
+        <div className="absolute inset-0 flex items-center justify-center z-50 bg-gray-950 bg-opacity-50">
+          <ColorRing
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="color-ring-loading"
+            wrapperStyle={{}}
+            wrapperClass="color-ring-wrapper"
+            colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+          />
+        </div>
+      )}
     </div>
   );
 };

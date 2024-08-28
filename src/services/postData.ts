@@ -18,6 +18,11 @@ export type User = {
   email: string;
   username: string;
   role: string;
+  isSubscribed?: string;
+};
+
+export type userRole = {
+  role: string;
 };
 
 export const postData = async (
@@ -39,7 +44,11 @@ export const fetchUsers = async (): Promise<User[]> => {
   console.log("Fetched Users:", response.data);
   return response.data;
 };
-
+export const fetchUserByEmail = async (email: string): Promise<User> => {
+  const response = await apiClient.get("/user/" + email);
+  console.log("Fetched Users:", response.data);
+  return response.data;
+};
 export const blockWebsite = async (
   data: BlockFormData,
 ): Promise<MutationResponse> => {
@@ -62,5 +71,28 @@ export const fetchManagerNotifications = async (): Promise<responseNotifications
   };
   const response = await apiClient.get("/notifications", { headers });
   console.log("Fetched Notifications:+++++++++", response.data);
+  return response.data;
+};
+export const updateSubscription = async (
+  id: string,
+): Promise<MutationResponse> => {
+  const response = await apiClient.patch(`/subscribe/${id}`);
+  return response.data;
+};
+export const deleteUser = async (id: string): Promise<MutationResponse> => {
+  const response = await apiClient.delete(`/users/${id}`);
+  return response.data;
+};
+
+export const updateRole = async (
+  id: string,
+  data: userRole,
+): Promise<MutationResponse> => {
+  const response = await apiClient.put(`/users/${id}`, data);
+  return response.data;
+};
+
+export const unBlockUrl = async (id: string): Promise<MutationResponse> => {
+  const response = await apiClient.delete(`/block/${id}`);
   return response.data;
 };
