@@ -1,4 +1,5 @@
 import { BlockFormData, Website } from "../types/BlockWebsite";
+import { responseNotifications } from "../types/notifications";
 import { loginFormData, RegisterFormData } from "../types/RegisterForm";
 import { apiClient } from "./apiClient";
 
@@ -60,6 +61,18 @@ export const fetchBlockedWebsite = async (): Promise<Website[]> => {
   console.log("Fetched blockWebsite:", response.data);
   return response.data;
 };
+
+export const fetchManagerNotifications =
+  async (): Promise<responseNotifications> => {
+    let accessToken = localStorage.getItem("net-token") || "";
+    accessToken = accessToken.replace(/^"|"$/g, "");
+    console.log(accessToken);
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+    const response = await apiClient.get("/notifications", { headers });
+    return response.data;
+  };
 export const updateSubscription = async (
   id: string,
 ): Promise<MutationResponse> => {
