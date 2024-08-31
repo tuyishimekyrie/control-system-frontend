@@ -4,14 +4,14 @@ import { useLocalStorage } from "../../hooks";
 import { fetchUserByEmail } from "../../services/postData";
 import { ColorRing } from "react-loader-spinner";
 
-const Settings: React.FC = () => {
+export const Settings: React.FC = () => {
   const { email } = useLocalStorage();
   const {
     data,
     isLoading,
     isError: error,
   } = useQuery({
-    queryKey: ["AdminUsersEmail", email],
+    queryKey: ["userEmail", email],
     queryFn: () => {
       if (!email) {
         return Promise.reject("No email found");
@@ -105,5 +105,3 @@ const Settings: React.FC = () => {
     </div>
   );
 };
-
-export default Settings;

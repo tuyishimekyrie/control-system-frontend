@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { SidebarLink, AdminSidebarLinks } from "../../utils/admin/SideBarLinks";
+import {
+  SidebarLink,
+  ManagerSidebarLinks,
+} from "../../utils/manager/SideBarLinks";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { TbLogout } from "react-icons/tb";
 import { RxHamburgerMenu } from "react-icons/rx";
 import Profile from "../../assets/tim.jpg";
-import useAuth from "../../utils/admin/AuthHook";
+import useAuth from "../../utils/manager/AuthHook";
 
 interface SidebarProps {
   menuActive: boolean;
@@ -44,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ menuActive }) => {
                   className="w-full h-full object-cover rounded-full"
                 />
               </div>
-              <h1 className="text-green-600 text-lg">{displayName}</h1>
+              <h1 className="text-white text-lg">{displayName}</h1>
             </div>
           )}
           <RxHamburgerMenu
@@ -58,7 +61,7 @@ const Sidebar: React.FC<SidebarProps> = ({ menuActive }) => {
               isCollapsed ? "items-center" : ""
             } text-gray-400 font-semibold space-y-1 text-[14px]`}
           >
-            {AdminSidebarLinks.map((item: SidebarLink) => (
+            {ManagerSidebarLinks.map((item: SidebarLink) => (
               <li
                 key={item.id}
                 className={`hover:text-white ${
@@ -77,7 +80,7 @@ const Sidebar: React.FC<SidebarProps> = ({ menuActive }) => {
                         : "hover:bg-green-600"
                     }`
                   }
-                  to={`/admin${item.link}`}
+                  to={`/manager${item.link}`}
                   data-testid={`navlink-${item.name.toLowerCase()}`}
                 >
                   <div className="flex items-center gap-x-3">

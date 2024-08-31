@@ -29,13 +29,13 @@ const fetchFilterData = async (): Promise<FilterData> => {
   return { categories: data }; // Wrap the array in an object
 };
 
-const FilteringKeyword: React.FC = () => {
+export const FilteringKeyword: React.FC = () => {
   const {
     data: filterData,
     error,
     isLoading,
   } = useQuery<FilterData>({
-    queryKey: ["filterDatas"],
+    queryKey: ["filterData"],
     queryFn: fetchFilterData,
     refetchOnWindowFocus: true,
   });
@@ -179,5 +179,3 @@ const FilteringKeyword: React.FC = () => {
     </div>
   );
 };
-
-export default FilteringKeyword;

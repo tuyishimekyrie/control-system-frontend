@@ -18,7 +18,7 @@ const ManageUserRoles = () => {
   const itemsPerPage = 10;
 
   const { data, error, isLoading, isError, refetch } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["allusers"],
     queryFn: fetchUsers,
     staleTime: Infinity,
   });
@@ -97,7 +97,7 @@ const ManageUserRoles = () => {
     }
     data
       .then(() => {
-        toast.success("User Deleted Successfully");
+        toast.success("User Updated Successfully");
         refetch();
       })
       .catch((error) => {

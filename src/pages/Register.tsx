@@ -5,11 +5,13 @@ import toast, { Toaster } from "react-hot-toast";
 import { postData } from "../services/postData";
 import { schema } from "../validations/registerSchema";
 import axios from "axios";
-import { RegisterFormData } from "../types/RegisterForm";
+import { RegisterFormData, RegisterRequestData } from "../types/RegisterForm";
 import { Link } from "react-router-dom";
 import { ColorRing } from "react-loader-spinner";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -25,6 +27,7 @@ const Register = () => {
       console.log("Registration successful!");
       toast.success("Registration Successful!");
       reset();
+      navigate("/auth/login");
     },
     onError: (error: unknown) => {
       if (axios.isAxiosError(error)) {
@@ -53,16 +56,25 @@ const Register = () => {
         />
       </div>
       <div className="flex flex-col items-center w-[50vw] max-h-screen p-20 max-sm:w-screen">
-        <h1 className="text-3xl text-green-600">Welcome Back!</h1>
+        <h1 className="text-3xl text-green-600">Register Your Organization</h1>
         <form
           className="flex flex-col gap-4 my-10 w-full"
-          onSubmit={handleSubmit((data) => mutation.mutate(data))}
+          onSubmit={handleSubmit((data) => {
+            const requestData: RegisterRequestData = {
+              orgName: data.name,
+              email: data.email,
+              password: data.password,
+              role: "manager",
+              isOrganization: true,
+            };
+            mutation.mutate(requestData);
+          })}
         >
           <input
             type="text"
             {...register("name")}
             id="name"
-            placeholder="Name"
+            placeholder="Organization Name"
             className="border border-slate-400 px-4 rounded-sm py-1 focus:outline-none"
           />
           {errors.name && (
