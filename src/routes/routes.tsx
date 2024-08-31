@@ -12,6 +12,8 @@ import FilteringKeyword from "../pages/adminpages/FilteringKeyword";
 import AddBlockedURL from "../pages/adminpages/AddBlockedUrls";
 import AddCategory from "../pages/adminpages/AddCategory";
 import AddKeyword from "../pages/adminpages/AddKeyword";
+import { ManagerLayout } from "../layouts/ManagersLayout";
+import * as ManagerPages from "../pages/managerpages/index";
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +41,21 @@ export const router = createBrowserRouter([
       { path: "add-blocked-url", element: <AddBlockedURL /> },
       { path: "add-category", element: <AddCategory /> },
       { path: "add-keyword", element: <AddKeyword /> },
+    ],
+  },
+  {
+    path: "manager",
+    element: <ManagerLayout />,
+    children: [
+      { index: true, element: <ManagerPages.Dashboard /> },
+      { path: "rules", element: <ManagerPages.WebFilterRules /> },
+      { path: "logs", element: <ManagerPages.WebActivity /> },
+      { path: "settings", element: <ManagerPages.Settings /> },
+      { path: "users", element: <ManagerPages.ManageUserRoles /> },
+      { path: "filtering", element: <ManagerPages.FilteringKeyword /> },
+      { path: "add-blocked-url", element: <ManagerPages.AddBlockedURL /> },
+      { path: "add-category", element: <ManagerPages.AddCategory /> },
+      { path: "add-keyword", element: <ManagerPages.AddKeyword /> },
     ],
   },
 ]);

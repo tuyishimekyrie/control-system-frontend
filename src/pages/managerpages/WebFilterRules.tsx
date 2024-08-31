@@ -6,11 +6,11 @@ import BlockWebsite from "../../components/forms/BlockWebsite";
 import { fetchBlockedWebsite } from "../../services/postData";
 import { useQuery } from "@tanstack/react-query";
 
-const WebFilterRules: React.FC = () => {
+export const WebFilterRules: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const { data, refetch } = useQuery({
-    queryKey: ["Websites"],
+    queryKey: ["Website"],
     queryFn: fetchBlockedWebsite,
     staleTime: Infinity,
   });
@@ -68,5 +68,3 @@ const WebFilterRules: React.FC = () => {
     </div>
   );
 };
-
-export default WebFilterRules;

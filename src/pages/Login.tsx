@@ -19,9 +19,9 @@ const Login = () => {
     if (token && user) {
       const parsedUser = JSON.parse(user);
       if (parsedUser.role === "manager") {
+        navigate("/manager");
+      } else if (parsedUser.role === "admin") {
         navigate("/admin");
-      } else {
-        navigate("/");
       }
     }
   }, [navigate]);
@@ -45,9 +45,9 @@ const Login = () => {
       localStorage.setItem("net-token", JSON.stringify(token));
       localStorage.setItem("user", JSON.stringify(data.user));
       if (data.user.role === "manager") {
+        navigate("/manager");
+      } else if (data.user.role === "admin") {
         navigate("/admin");
-      } else {
-        navigate("/");
       }
     },
     onError: (error: unknown) => {
@@ -77,7 +77,7 @@ const Login = () => {
         />
       </div>
       <div className="flex flex-col items-center w-[50vw] max-h-screen p-20 max-sm:w-screen">
-        <h1 className="text-3xl text-green-600">Welcome Back!</h1>
+        <h1 className="text-3xl text-green-600">Login to Your Account</h1>
         <form
           className="flex flex-col gap-4 my-10 w-full"
           onSubmit={handleSubmit((data) => {

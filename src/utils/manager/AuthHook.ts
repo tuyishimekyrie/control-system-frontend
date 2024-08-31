@@ -5,6 +5,7 @@ interface User {
   name: string;
   role: string;
 }
+
 const useAuth = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -13,13 +14,13 @@ const useAuth = () => {
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem("net-token");
-      const user = localStorage.getItem("user");
+      const userJson = localStorage.getItem("user");
 
-      if (!token || !user) {
+      if (!token || !userJson) {
         setIsAuthenticated(false);
         navigate("/");
       } else {
-        const userData: User = JSON.parse(user);
+        const userData: User = JSON.parse(userJson);
         setUser(userData);
         setIsAuthenticated(true);
       }

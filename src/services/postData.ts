@@ -1,6 +1,10 @@
 import { BlockFormData, Website } from "../types/BlockWebsite";
 import { responseNotifications } from "../types/notifications";
-import { loginFormData, RegisterFormData } from "../types/RegisterForm";
+import {
+  loginFormData,
+  RegisterRequestData,
+  AddUserFormData,
+} from "../types/RegisterForm";
 import { apiClient } from "./apiClient";
 
 type MutationResponse = {
@@ -26,7 +30,13 @@ export type userRole = {
 };
 
 export const postData = async (
-  data: RegisterFormData,
+  data: RegisterRequestData,
+): Promise<MutationResponse> => {
+  const response = await apiClient.post("/auth/register", data);
+  return response.data;
+};
+export const AddUser = async (
+  data: AddUserFormData,
 ): Promise<MutationResponse> => {
   const response = await apiClient.post("/auth/register", data);
   return response.data;
@@ -40,13 +50,26 @@ export const postLoginData = async (
 };
 
 export const fetchUsers = async (): Promise<User[]> => {
-  const response = await apiClient.get("/users");
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  console.log(accessToken);
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.get("/users", { headers });
   console.log("Fetched Users:", response.data);
   return response.data;
 };
+
 export const fetchUserByEmail = async (email: string): Promise<User> => {
-  const response = await apiClient.get("/user/" + email);
-  console.log("Fetched Users:", response.data);
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  console.log(accessToken);
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.get(`/user/${email}`, { headers });
+  console.log("Fetched User by Email:", response.data);
   return response.data;
 };
 export const blockWebsite = async (
@@ -80,7 +103,12 @@ export const updateSubscription = async (
   return response.data;
 };
 export const deleteUser = async (id: string): Promise<MutationResponse> => {
-  const response = await apiClient.delete(`/users/${id}`);
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.delete(`/users/${id}`, { headers });
   return response.data;
 };
 
@@ -88,7 +116,12 @@ export const updateRole = async (
   id: string,
   data: userRole,
 ): Promise<MutationResponse> => {
-  const response = await apiClient.put(`/users/${id}`, data);
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.put(`/users/${id}`, data, { headers });
   return response.data;
 };
 

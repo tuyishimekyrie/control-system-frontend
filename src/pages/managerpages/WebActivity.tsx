@@ -5,13 +5,13 @@ import { fetchUserLogs } from "../../services/LogsData";
 import axios from "axios";
 import { format } from "date-fns";
 
-const WebActivity = () => {
+export const WebActivity = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
   const { data, error, isLoading, isError } = useQuery({
-    queryKey: ["usersLogs"],
+    queryKey: ["userLogs"],
     queryFn: fetchUserLogs,
     staleTime: Infinity,
   });
@@ -172,5 +172,3 @@ const WebActivity = () => {
     </div>
   );
 };
-
-export default WebActivity;

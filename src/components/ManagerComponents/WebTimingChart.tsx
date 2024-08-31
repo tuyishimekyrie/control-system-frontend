@@ -22,7 +22,7 @@ ChartJS.register(
 
 const TopWebsitesChart = () => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["adminTotalTimeSpentPerWebsite"],
+    queryKey: ["totalTimeSpentPerWebsite"],
     queryFn: fetchTotalTimeSpentPerWebsite,
     staleTime: Infinity,
   });

@@ -24,7 +24,7 @@ const useOutsideClick = (
   }, [ref, handler]);
 };
 
-const Dashboard = () => {
+export const Dashboard = () => {
   const [filterPopupVisible, setFilterPopupVisible] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("Last 7 Days");
 
@@ -47,7 +47,7 @@ const Dashboard = () => {
     isLoading: isUsersLoading,
     isError: isUsersError,
   } = useQuery({
-    queryKey: ["allusers"],
+    queryKey: ["users"],
     queryFn: fetchUsers,
     staleTime: Infinity,
   });
@@ -57,13 +57,13 @@ const Dashboard = () => {
     isLoading: isLogsLoading,
     isError: isLogsError,
   } = useQuery({
-    queryKey: ["usersLogs"],
+    queryKey: ["logs"],
     queryFn: fetchUserLogs,
     staleTime: Infinity,
   });
 
   const { data } = useQuery({
-    queryKey: ["Websites"],
+    queryKey: ["Website"],
     queryFn: fetchBlockedWebsite,
     staleTime: Infinity,
   });
@@ -233,5 +233,3 @@ const Dashboard = () => {
     </div>
   );
 };
-
-export default Dashboard;
