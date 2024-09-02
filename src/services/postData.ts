@@ -129,3 +129,12 @@ export const unBlockUrl = async (id: string): Promise<MutationResponse> => {
   const response = await apiClient.delete(`/block/${id}`);
   return response.data;
 };
+
+export const markNotificationAsSeen = async (notificationId: string) => {
+  try {
+    await apiClient.patch("/notifications", { id: notificationId });
+  } catch (error) {
+    console.error("Error marking notification as seen:", error);
+    throw error;
+  }
+};

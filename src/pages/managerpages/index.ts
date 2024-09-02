@@ -7,3 +7,4 @@ export * from "./WebFilterRules";
 export * from "./dashboard";
 export * from "./manageUserRoles";
 export * from "./settings";
+export * from "./Notification";
