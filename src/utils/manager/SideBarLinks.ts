@@ -5,6 +5,8 @@ import { BsGraphUpArrow } from "react-icons/bs";
 import { RiListSettingsLine } from "react-icons/ri";
 import { PiUsersThree } from "react-icons/pi";
 import { BsFilterCircle } from "react-icons/bs";
+import { IoIosNotificationsOutline } from "react-icons/io";
+
 export type SidebarLink = {
   id: number;
   name: string;
@@ -42,6 +44,12 @@ export const ManagerSidebarLinks: SidebarLink[] = [
     name: "Filtering",
     icon: BsFilterCircle,
     link: "/filtering",
+  },
+  {
+    id: 7,
+    name: "Notifications",
+    icon: IoIosNotificationsOutline,
+    link: "/notifications",
   },
   {
     id: 5,

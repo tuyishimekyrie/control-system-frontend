@@ -34,7 +34,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
           className="text-[20px] text-gray-400 cursor-pointer"
           onClick={toggleNotifications}
         />
-        <span className="text-white bg-green-600 w-4 h-4 flex justify-center items-center rounded-[50%] absolute right-4 top-7">
+        <span className="text-white bg-green-600 w-4 h-4 flex justify-center items-center rounded-[50%] absolute right-4 top-7 text-xs">
           {data?.notificationsNumber}
         </span>
         {showNotifications && data && <Notifications data={data} />}

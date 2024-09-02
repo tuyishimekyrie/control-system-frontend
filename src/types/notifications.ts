@@ -4,6 +4,7 @@ export type notifications = {
   message: string;
   createdAt: string;
   updatedAt: string;
+  unread?: boolean;
 };
 export type responseNotifications = {
   message: string;
