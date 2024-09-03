@@ -93,7 +93,10 @@ export const ManageUserRoles = () => {
   return (
     <>
       {showAddUserForm ? (
-        <AddUsers setShowAddUserForm={setShowAddUserForm} />
+        <AddUsers
+          setShowAddUserForm={setShowAddUserForm}
+          refetchUsers={refetch}
+        />
       ) : (
         <div className="p-5 pt-0">
           <div className="flex justify-between items-center mb-10 mt-8">
@@ -148,6 +151,12 @@ export const ManageUserRoles = () => {
                       Role
                     </th>
                     <th className="border border-gray-700 p-3 text-left max-w-[150px]">
+                      Ip Address
+                    </th>
+                    <th className="border border-gray-700 p-3 text-left max-w-[150px]">
+                      Mac Address
+                    </th>
+                    <th className="border border-gray-700 p-3 text-left max-w-[150px]">
                       Subscribed
                     </th>
                     <th className="border border-gray-700 p-3 text-left max-w-[150px]">
@@ -176,6 +185,12 @@ export const ManageUserRoles = () => {
                       </td>
                       <td className="border border-gray-700 p-3">
                         {user.role}
+                      </td>
+                      <td className="border border-gray-700 p-3">
+                        {user.ipAddress}
+                      </td>
+                      <td className="border border-gray-700 p-3">
+                        {user.macAddress}
                       </td>
                       <td className="border border-gray-700 p-3">
                         {user.isSubscribed ? (

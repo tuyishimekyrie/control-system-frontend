@@ -22,6 +22,8 @@ export type User = {
   email: string;
   username: string;
   role: string;
+  macAddress: string;
+  ipAddress: string;
   isSubscribed?: string;
 };
 
