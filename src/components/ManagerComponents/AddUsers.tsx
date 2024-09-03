@@ -9,13 +9,16 @@ import { useEffect, useState } from "react";
 
 const AddUsers = ({
   setShowAddUserForm,
+  refetchUsers,
 }: {
   setShowAddUserForm: React.Dispatch<React.SetStateAction<boolean>>;
+  refetchUsers: () => void;
 }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<AddUserFormData>({
     resolver: zodResolver(userRegisterSchema),
   });
@@ -45,14 +48,15 @@ const AddUsers = ({
       toast.success(
         "User added successfully! Consider logging out, to log in as the new user.",
       );
+      reset();
       setShowAddUserForm(false);
+      refetchUsers();
     },
-    onError: (error: unknown) => {
-      if (error instanceof Error) {
-        toast.error(error.message || "An error occurred");
-      } else {
-        toast.error("An unexpected error occurred");
-      }
+    onError: (error: any) => {
+      reset();
+      const errorMessage =
+        error.response?.data?.message || error.message || "An error occurred";
+      toast.error(errorMessage);
     },
   });
 
@@ -97,6 +101,26 @@ const AddUsers = ({
             />
             {errors.password && (
               <p className="text-red-500 text-xs">{errors.password.message}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-300 text-sm mb-2"
+              htmlFor="macAddress"
+            >
+              MacAddress
+            </label>
+            <input
+              type="text"
+              id="macAddress"
+              {...register("macAddress")}
+              className="w-full p-2 border border-gray-700 rounded-sm bg-[#1F2A40] text-gray-100 focus:outline-none"
+              placeholder="Enter Devices's macAddress"
+            />
+            {errors.macAddress && (
+              <p className="text-red-500 text-xs">
+                {errors.macAddress.message}
+              </p>
             )}
           </div>
           <div className="flex mt-8">

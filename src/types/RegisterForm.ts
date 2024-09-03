@@ -21,4 +21,5 @@ export type AddUserFormData = {
   role: string;
   isOrganization: boolean;
   organizationId: string;
+  macAddress: string;
 };
