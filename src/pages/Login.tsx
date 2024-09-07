@@ -12,6 +12,7 @@ import { ColorRing } from "react-loader-spinner";
 
 const Login = () => {
   const navigate = useNavigate();
+
   useEffect(() => {
     const token = localStorage.getItem("net-token");
     const user = localStorage.getItem("user");
@@ -39,15 +40,52 @@ const Login = () => {
     mutationFn: postLoginData,
     onSuccess: (data) => {
       console.log("Login successful!");
+      console.log(data);
       toast.success("Login Successful!");
       reset();
       const token = data.token;
       localStorage.setItem("net-token", JSON.stringify(token));
       localStorage.setItem("user", JSON.stringify(data.user));
+
+      // Redirect based on user role
       if (data.user.role === "manager") {
         navigate("/manager");
       } else if (data.user.role === "admin") {
         navigate("/admin");
+      } else if (data.user.role === "user") {
+        // Fetch user's location and log it if role is "user"
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            // Send location to backend
+            fetch("http://localhost:4000/api/v1/update-location", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Attach token for authentication
+              },
+              body: JSON.stringify({
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                userId: data.user.userId,
+                latitude,
+                longitude,
+              }),
+            })
+              .then((response) => response.json())
+              .then((locationData) => {
+                console.log("Location logged:", locationData);
+              })
+              .catch((error) => {
+                console.error("Failed to log location:", error);
+                toast.error("Failed to log location.");
+              });
+          },
+          (error) => {
+            console.error("Geolocation error:", error.message);
+            toast.error("Failed to get location.");
+          },
+        );
       }
     },
     onError: (error: unknown) => {
@@ -113,6 +151,12 @@ const Login = () => {
             disabled={mutation.isPending}
           >
             {mutation.isPending ? "Submitting..." : "Login"}
+          </button>
+          <button
+            className="bg-green-700 text-white py-2 rounded-sm hover:bg-green-900"
+            onClick={() => navigate("/")}
+          >
+            GO Home
           </button>
 
           {mutation.isSuccess && (

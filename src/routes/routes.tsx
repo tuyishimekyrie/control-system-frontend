@@ -15,6 +15,7 @@ import AddKeyword from "../pages/adminpages/AddKeyword";
 import { ManagerLayout } from "../layouts/ManagersLayout";
 import * as ManagerPages from "../pages/managerpages/index";
 import Notification from "../pages/managerpages/Notification";
+import { Location } from "../pages/managerpages/Location";
 
 export const router = createBrowserRouter([
   {
@@ -58,6 +59,7 @@ export const router = createBrowserRouter([
       { path: "add-category", element: <ManagerPages.AddCategory /> },
       { path: "add-keyword", element: <ManagerPages.AddKeyword /> },
       { path: "notifications", element: <Notification /> },
+      { path: "location", element: <Location /> },
     ],
   },
 ]);

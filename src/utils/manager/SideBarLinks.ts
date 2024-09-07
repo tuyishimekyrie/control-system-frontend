@@ -6,6 +6,7 @@ import { RiListSettingsLine } from "react-icons/ri";
 import { PiUsersThree } from "react-icons/pi";
 import { BsFilterCircle } from "react-icons/bs";
 import { IoIosNotificationsOutline } from "react-icons/io";
+import { CiLocationOn } from "react-icons/ci";
 
 export type SidebarLink = {
   id: number;
@@ -50,6 +51,12 @@ export const ManagerSidebarLinks: SidebarLink[] = [
     name: "Notifications",
     icon: IoIosNotificationsOutline,
     link: "/notifications",
+  },
+  {
+    id: 8,
+    name: "Location",
+    icon: CiLocationOn,
+    link: "/location",
   },
   {
     id: 5,

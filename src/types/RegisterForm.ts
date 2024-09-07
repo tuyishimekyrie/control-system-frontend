@@ -2,6 +2,8 @@ export type RegisterFormData = {
   name: string;
   email: string;
   password: string;
+  id?: string;
+  userId?: string;
 };
 export type RegisterRequestData = {
   orgName: string;
@@ -13,6 +15,8 @@ export type RegisterRequestData = {
 export type loginFormData = {
   email: string;
   password: string;
+  id?: string;
+  userId?: string;
 };
 
 export type AddUserFormData = {
