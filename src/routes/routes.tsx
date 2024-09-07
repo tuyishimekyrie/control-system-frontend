@@ -16,6 +16,7 @@ import { ManagerLayout } from "../layouts/ManagersLayout";
 import * as ManagerPages from "../pages/managerpages/index";
 import Notification from "../pages/managerpages/Notification";
 import { Location } from "../pages/managerpages/Location";
+import ManageOrganizations from "../pages/adminpages/manageOrganizations";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,7 @@ export const router = createBrowserRouter([
       { path: "add-blocked-url", element: <AddBlockedURL /> },
       { path: "add-category", element: <AddCategory /> },
       { path: "add-keyword", element: <AddKeyword /> },
+      { path: "organizations", element: <ManageOrganizations /> },
     ],
   },
   {

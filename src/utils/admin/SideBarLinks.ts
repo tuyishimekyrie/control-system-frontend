@@ -5,6 +5,8 @@ import { BsGraphUpArrow } from "react-icons/bs";
 import { RiListSettingsLine } from "react-icons/ri";
 import { PiUsersThree } from "react-icons/pi";
 import { BsFilterCircle } from "react-icons/bs";
+import { VscOrganization } from "react-icons/vsc";
+
 export type SidebarLink = {
   id: number;
   name: string;
@@ -38,13 +40,19 @@ export const AdminSidebarLinks: SidebarLink[] = [
     link: "/users",
   },
   {
-    id: 6,
+    id: 5,
     name: "Filtering",
     icon: BsFilterCircle,
     link: "/filtering",
   },
   {
-    id: 5,
+    id: 6,
+    name: "Organizations",
+    icon: VscOrganization,
+    link: "/organizations",
+  },
+  {
+    id: 7,
     name: "Settings",
     icon: RiListSettingsLine,
     link: "/settings",

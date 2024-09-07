@@ -21,6 +21,12 @@ export const ManagerLayout: React.FC = () => {
         return "MANAGE USERS";
       case "settings":
         return "SETTINGS";
+      case "filtering":
+        return "WEB FIILTERS";
+      case "notifications":
+        return "NOTIFICATIONS";
+      case "location":
+        return "LOCATION";
       default:
         return "DASHBOARD";
     }

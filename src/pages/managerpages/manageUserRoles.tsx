@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
@@ -10,6 +11,7 @@ import {
 } from "../../services/postData";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import AddUsers from "../../components/ManagerComponents/AddUsers";
+import UpdateUser from "../../components/ManagerComponents/updateUser";
 
 export const ManageUserRoles = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,6 +20,8 @@ export const ManageUserRoles = () => {
   const popupRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = 10;
   const [showAddUserForm, setShowAddUserForm] = useState(false);
+  const [showUpdateUserForm, setShowUpdateUserForm] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
 
   const { data, error, isLoading, isError, refetch } = useQuery({
     queryKey: ["users"],
@@ -33,7 +37,6 @@ export const ManageUserRoles = () => {
   }
 
   const users = data || [];
-  console.log(users);
 
   const filteredUsers = users.filter(
     (user) =>
@@ -41,7 +44,6 @@ export const ManageUserRoles = () => {
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.role.toLowerCase().includes(searchTerm.toLowerCase()),
   );
-  console.log(filteredUsers);
 
   const paginatedUsers = filteredUsers.slice(
     (currentPage - 1) * itemsPerPage,
@@ -66,10 +68,12 @@ export const ManageUserRoles = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   const onUpdateSubscription = (id: string) => {
     const data = updateSubscription(id);
     data
       .then(() => {
+        setShowPopup(null);
         toast.success("User Updated Successfully");
         refetch();
       })
@@ -78,6 +82,7 @@ export const ManageUserRoles = () => {
         refetch();
       });
   };
+
   const onDeleteUser = (id: string) => {
     const data = deleteUser(id);
     data
@@ -90,11 +95,29 @@ export const ManageUserRoles = () => {
         refetch();
       });
   };
+
+  const onUpdateUser = (user: any) => {
+    setSelectedUser(user);
+    setShowUpdateUserForm(true);
+    setShowPopup(null);
+  };
+
+  const handleCloseUpdate = () => {
+    setSelectedUser(null);
+    setShowUpdateUserForm(false);
+  };
+
   return (
     <>
       {showAddUserForm ? (
         <AddUsers
           setShowAddUserForm={setShowAddUserForm}
+          refetchUsers={refetch}
+        />
+      ) : showUpdateUserForm ? (
+        <UpdateUser
+          user={selectedUser}
+          onClose={handleCloseUpdate}
           refetchUsers={refetch}
         />
       ) : (
@@ -215,13 +238,19 @@ export const ManageUserRoles = () => {
                         {showPopup === index && (
                           <div
                             ref={popupRef}
-                            className="absolute right-[40%] mt-[3px] w-32 bg-gray-800 text-white rounded shadow-lg z-10 "
+                            className="absolute right-[40%] mt-[3px] w-32 bg-gray-800 text-white rounded shadow-lg z-100 "
                           >
                             <div
                               className="p-2 hover:bg-red-600 hover:text-white cursor-pointer"
                               onClick={() => onDeleteUser(user.id)}
                             >
                               Delete
+                            </div>
+                            <div
+                              className="p-2 hover:bg-green-600 hover:text-white cursor-pointer"
+                              onClick={() => onUpdateUser(user)}
+                            >
+                              Update
                             </div>
                             <div
                               className="p-2 hover:bg-green-600 hover:text-white cursor-pointer"
