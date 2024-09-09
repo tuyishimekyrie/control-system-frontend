@@ -26,6 +26,12 @@ export type User = {
   ipAddress: string;
   isSubscribed?: string;
 };
+export type Organization = {
+  id: string;
+  name: string;
+  maxUsers: number;
+  createdAt: string;
+};
 
 export type userRole = {
   role: string;
@@ -139,4 +145,66 @@ export const markNotificationAsSeen = async (notificationId: string) => {
     console.error("Error marking notification as seen:", error);
     throw error;
   }
+};
+
+export const fetchOrganizations = async (): Promise<Organization[]> => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.get("/organizations", { headers });
+  return response.data;
+};
+
+export const fetchSingleOrganization = async (
+  id: string,
+): Promise<Organization> => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.get(`/organizations/${id}`, { headers });
+  return response.data;
+};
+
+export const updateOrganization = async (
+  id: string,
+  data: Partial<Organization>,
+): Promise<MutationResponse> => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.patch(`/organizations/${id}`, data, {
+    headers,
+  });
+  return response.data;
+};
+
+export const deleteOrganization = async (
+  id: string,
+): Promise<MutationResponse> => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.delete(`/organizations/${id}`, { headers });
+  return response.data;
+};
+
+export const updateUser = async (
+  id: string,
+  data: Partial<User>,
+): Promise<MutationResponse> => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.patch(`/users/${id}`, data, { headers });
+  return response.data;
 };

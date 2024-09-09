@@ -19,6 +19,10 @@ export const AdminLayout: React.FC = () => {
         return "USER ACTIVITY";
       case "users":
         return "MANAGE USERS";
+      case "filtering":
+        return "WEB FIILTERS";
+      case "organizations":
+        return "ORGANIZATIONS";
       case "settings":
         return "SETTINGS";
       default:
