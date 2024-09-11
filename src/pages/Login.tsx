@@ -156,7 +156,7 @@ const Login = () => {
             className="bg-green-700 text-white py-2 rounded-sm hover:bg-green-900"
             onClick={() => navigate("/")}
           >
-            GO Home
+            Go Back
           </button>
 
           {mutation.isSuccess && (
