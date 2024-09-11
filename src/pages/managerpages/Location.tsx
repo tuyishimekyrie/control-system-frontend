@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
+import { Toaster, toast } from "react-hot-toast";
 
 interface LocationData {
   id: string;
@@ -30,7 +31,7 @@ export const Location: React.FC = () => {
 
         const parsedUser: User = JSON.parse(user);
         const response = await axios.get(
-          `http://localhost:4000/api/v1/locations?organizationId=${parsedUser.organizationId}`,
+          `${import.meta.env.VITE_API_BASE_URL}/locations?organizationId=${parsedUser.organizationId}`,
         );
 
         setLocations(response.data.data);
@@ -57,6 +58,7 @@ export const Location: React.FC = () => {
 
   return (
     <div className="p-5 pt-0">
+      <Toaster />
       <div className="flex justify-between items-center mb-10 mt-8">
         <div>
           <h1 className="text-[25px] font-bold text-gray-400">LOCATIONS</h1>
@@ -95,8 +97,8 @@ export const Location: React.FC = () => {
               {paginatedLocations.map((location) => (
                 <tr
                   key={location.id}
-                  className="border border-gray-700 text-gray-400"
-                  style={{ backgroundColor: "#1F2A40" }}
+                  className="border border-gray-700 text-gray-400 hover:bg-green-600 bg-opacity-90 hover:text-white hover:cursor-pointer hover:transition-all bg-[#1F2A40]"
+                  onClick={() => toast.success("clicked")}
                 >
                   <td className="border border-gray-700 p-3 whitespace-nowrap">
                     {formatDate(location.recordedAt)}
