@@ -208,3 +208,22 @@ export const updateUser = async (
   const response = await apiClient.patch(`/users/${id}`, data, { headers });
   return response.data;
 };
+
+export const postForgotPassword = async (
+  email: string,
+  newPassword: string,
+  confirmPassword: string,
+): Promise<MutationResponse> => {
+  const response = await apiClient.patch("/auth/update-password", {
+    email,
+    newPassword,
+    confirmPassword,
+  });
+  return response.data;
+};
+
+export const getUserByEmail = async (email: string): Promise<User> => {
+  const response = await apiClient.get(`/user/${email}`);
+  console.log("Fetched User by Email:", response.data);
+  return response.data;
+};

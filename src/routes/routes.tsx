@@ -17,6 +17,7 @@ import * as ManagerPages from "../pages/managerpages/index";
 import Notification from "../pages/managerpages/Notification";
 import { Location } from "../pages/managerpages/Location";
 import ManageOrganizations from "../pages/adminpages/manageOrganizations";
+import ForgotPassword from "../pages/forgotPassword";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
   {
     path: "/auth/login",
     element: <Login />,
+  },
+  {
+    path: "/auth/forgot-password",
+    element: <ForgotPassword />,
   },
   {
     path: "admin",
