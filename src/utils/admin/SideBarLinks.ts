@@ -6,6 +6,7 @@ import { RiListSettingsLine } from "react-icons/ri";
 import { PiUsersThree } from "react-icons/pi";
 import { BsFilterCircle } from "react-icons/bs";
 import { VscOrganization } from "react-icons/vsc";
+import { CiLocationOn } from "react-icons/ci";
 
 export type SidebarLink = {
   id: number;
@@ -56,5 +57,11 @@ export const AdminSidebarLinks: SidebarLink[] = [
     name: "Settings",
     icon: RiListSettingsLine,
     link: "/settings",
+  },
+  {
+    id: 8,
+    name: "Location",
+    icon: CiLocationOn,
+    link: "/location",
   },
 ];

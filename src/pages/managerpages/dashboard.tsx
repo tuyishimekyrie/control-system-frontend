@@ -75,7 +75,7 @@ export const Dashboard = () => {
   }
 
   const userCount = usersData ? usersData.length : 0;
-  const logCount = logsData ? logsData.length : 0;
+  const logCount = logsData ? 0 : 0;
 
   const recentBlockedWebsites = blockedData.slice(0, 9);
 

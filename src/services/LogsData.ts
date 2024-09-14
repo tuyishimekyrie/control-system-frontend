@@ -17,8 +17,8 @@ export const fetchUserLogs = async (): Promise<ActivityLog[]> => {
     Authorization: `Bearer ${accessToken}`,
   };
 
-  const response = await apiClient.get("/user/logs", { headers });
-  console.log("API Response:", response.data);
+  const response = await apiClient.get("/user/logs/all", { headers });
+  console.log("API Response:", response);
   return response.data;
 };
 
