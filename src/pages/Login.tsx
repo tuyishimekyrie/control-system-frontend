@@ -196,10 +196,15 @@ const Login = () => {
             <p className="text-green-500">Success! {mutation.data.message}</p>
           )}
         </form>
-        <div className="flex gap-2 max-sm:flex-wrap">
-          <p className="text-gray-500 text-sm">Don't Have An Account?</p>
-          <span className="text-blue-700 text-sm underline hover:cursor-pointer">
-            <Link to="/auth/register">Create Account</Link>
+        <div className="flex items-center justify-between w-full">
+          <div className="flex gap-2 max-sm:flex-wrap">
+            <p className="text-gray-500 text-sm">Don't Have An Account?</p>
+            <span className="text-blue-700 text-sm underline hover:cursor-pointer">
+              <Link to="/auth/register">Create Account</Link>
+            </span>
+          </div>
+          <span className="text-gray-500 text-sm underline hover:cursor-pointer">
+            <Link to="/auth/forgot-password"> Forgot Password?</Link>
           </span>
         </div>
       </div>
