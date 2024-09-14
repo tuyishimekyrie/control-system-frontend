@@ -13,9 +13,9 @@ interface LocationData {
   recordedAt: string;
 }
 
-interface User {
-  organizationId: string;
-}
+// interface User {
+//   organizationId: string;
+// }
 
 export const Location: React.FC = () => {
   const [locations, setLocations] = useState<LocationData[]>([]);
@@ -35,9 +35,9 @@ export const Location: React.FC = () => {
           throw new Error("User not found in localStorage");
         }
 
-        const parsedUser: User = JSON.parse(user);
+        // const parsedUser: User = JSON.parse(user);
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/locations?organizationId=${parsedUser.organizationId}`,
+          `${import.meta.env.VITE_API_BASE_URL}/location`,
         );
 
         setLocations(response.data.data);

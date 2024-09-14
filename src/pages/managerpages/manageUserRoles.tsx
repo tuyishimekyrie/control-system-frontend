@@ -155,7 +155,7 @@ export const ManageUserRoles = () => {
             {isLoading ? (
               <p className="text-green-600 text-center">Loading users...</p>
             ) : (
-              <table className="w-full border-collapse">
+              <table className="w-full border-collapse mb-24">
                 <thead className="text-[15px] font-bold">
                   <tr
                     style={{ backgroundColor: "#1F2A45" }}
@@ -252,6 +252,12 @@ export const ManageUserRoles = () => {
                             >
                               Update
                             </div>
+                            {/* <div
+                              className="p-2 hover:bg-green-600 hover:text-white cursor-pointer"
+                              onClick={() => onChangeName(user)}
+                            >
+                              Change Name
+                            </div> */}
                             <div
                               className="p-2 hover:bg-green-600 hover:text-white cursor-pointer"
                               onClick={() => onUpdateSubscription(user.id)}

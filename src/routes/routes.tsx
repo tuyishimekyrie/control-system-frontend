@@ -17,7 +17,7 @@ import * as ManagerPages from "../pages/managerpages/index";
 import Notification from "../pages/managerpages/Notification";
 import { Location } from "../pages/managerpages/Location";
 import ManageOrganizations from "../pages/adminpages/manageOrganizations";
-import ForgotPassword from "../pages/forgotPassword";
+import { Location as AllLocation } from "../pages/adminpages/Location";
 
 export const router = createBrowserRouter([
   {
@@ -33,10 +33,6 @@ export const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/auth/forgot-password",
-    element: <ForgotPassword />,
-  },
-  {
     path: "admin",
     element: <AdminLayout />,
     children: [
@@ -50,6 +46,7 @@ export const router = createBrowserRouter([
       { path: "add-category", element: <AddCategory /> },
       { path: "add-keyword", element: <AddKeyword /> },
       { path: "organizations", element: <ManageOrganizations /> },
+      { path: "location", element: <AllLocation /> },
     ],
   },
   {

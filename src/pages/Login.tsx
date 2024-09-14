@@ -47,19 +47,55 @@ const Login = () => {
       localStorage.setItem("net-token", JSON.stringify(token));
       localStorage.setItem("user", JSON.stringify(data.user));
 
+      // Redirect based on user role
       if (data.user.role === "manager") {
         navigate("/manager");
-      } else if (data.user.role === "admin") {
-        navigate("/admin");
-      } else if (data.user.role === "user") {
+        // Fetch user's location and log it if role is "user"
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
+            // Send location to backend
             fetch("http://localhost:4000/api/v1/update-location", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`, // Attach token for authentication
+              },
+              body: JSON.stringify({
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                userId: data.user.userId,
+                latitude,
+                longitude,
+              }),
+            })
+              .then((response) => response.json())
+              .then((locationData) => {
+                console.log("Location logged:", locationData);
+              })
+              .catch((error) => {
+                console.error("Failed to log location:", error);
+                toast.error("Failed to log location.");
+              });
+          },
+          (error) => {
+            console.error("Geolocation error:", error.message);
+            toast.error("Failed to get location.");
+          },
+        );
+      } else if (data.user.role === "admin") {
+        navigate("/admin");
+      } else if (data.user.role === "user") {
+        // Fetch user's location and log it if role is "user"
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            // Send location to backend
+            fetch("http://localhost:4000/api/v1/update-location", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Attach token for authentication
               },
               body: JSON.stringify({
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -160,15 +196,10 @@ const Login = () => {
             <p className="text-green-500">Success! {mutation.data.message}</p>
           )}
         </form>
-        <div className="flex items-center justify-between w-full">
-          <div className="flex gap-2 max-sm:flex-wrap">
-            <p className="text-gray-500 text-sm">Don't Have An Account?</p>
-            <span className="text-blue-700 text-sm underline hover:cursor-pointer">
-              <Link to="/auth/register">Create Account</Link>
-            </span>
-          </div>
-          <span className="text-gray-500 text-sm underline hover:cursor-pointer">
-            <Link to="/auth/forgot-password"> Forgot Password?</Link>
+        <div className="flex gap-2 max-sm:flex-wrap">
+          <p className="text-gray-500 text-sm">Don't Have An Account?</p>
+          <span className="text-blue-700 text-sm underline hover:cursor-pointer">
+            <Link to="/auth/register">Create Account</Link>
           </span>
         </div>
       </div>
