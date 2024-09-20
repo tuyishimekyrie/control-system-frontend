@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import RuleList from "../../components/AdminComponents/RuleList";
+import RuleList from "../../components/SchoolComponents/RuleList";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
 import BlockWebsite from "../../components/forms/BlockWebsite";
@@ -10,7 +10,7 @@ export const WebFilterRules: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const { data, refetch } = useQuery({
-    queryKey: ["websites"],
+    queryKey: ["webs"],
     queryFn: fetchBlockedWebsite,
     staleTime: Infinity,
   });

@@ -6,11 +6,15 @@ export type RegisterFormData = {
   userId?: string;
 };
 export type RegisterRequestData = {
-  orgName: string;
+  orgName?: string;
+  schoolName?: string;
+  parentName?: string;
   email: string;
   password: string;
   role: string;
-  isOrganization: boolean;
+  isOrganization?: boolean;
+  isSchool?: boolean;
+  isParent?: boolean;
 };
 export type loginFormData = {
   email: string;
@@ -23,7 +27,11 @@ export type AddUserFormData = {
   email: string;
   password: string;
   role: string;
-  isOrganization: boolean;
-  organizationId: string;
+  isOrganization?: boolean;
+  organizationId?: string;
   macAddress: string;
+  isSchool?: boolean;
+  schoolId?: string;
+  isParent?: boolean;
+  parentId?: string;
 };

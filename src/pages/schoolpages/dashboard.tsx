@@ -4,7 +4,7 @@ import { RiFilter3Fill } from "react-icons/ri";
 import { useQuery } from "@tanstack/react-query";
 import { fetchBlockedWebsite, fetchUsers } from "../../services/postData";
 import { fetchUserLogs } from "../../services/LogsData";
-import TopWebsitesChart from "../../components/ManagerComponents/WebTimingChart";
+import TopWebsitesChart from "../../components/SchoolComponents/WebTimingChart";
 import { Website } from "../../types/BlockWebsite";
 import { format } from "date-fns";
 

@@ -1,11 +1,8 @@
-// import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/UserComponents/Navbar";
-// import { fetchUserLogs } from "../services/LogsData";
-// import { fetchBlockedWebsite } from "../services/postData";
-// import useNotifications from "../utils/useNotifications";
+import AccountTypeModal from "../components/UserComponents/AccountType";
 import heroImage from "/assets/data-protection-business.jpg";
 
 export interface ActivityLog {
@@ -18,19 +15,7 @@ export interface ActivityLog {
 
 const Home = () => {
   const navigate = useNavigate();
-
-  // const { data: blockedData } = useQuery({
-  //   queryKey: ["Website"],
-  //   queryFn: fetchBlockedWebsite,
-  //   staleTime: Infinity,
-  // });
-
-  // const { data: userLogs } = useQuery({
-  //   queryKey: ["userLogs"],
-  //   queryFn: fetchUserLogs,
-  //   staleTime: Infinity,
-  //   refetchInterval: 5000,
-  // });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("net-token");
@@ -39,13 +24,11 @@ const Home = () => {
       toast.success("You are currently logged in");
     }
   }, []);
-  // useNotifications({
-  //   title: "Blocked Website Alert",
-  //   options: {
-  //     body: "You visited a blocked website",
-  //     icon: "/path/to/icon.png",
-  //   },
-  // });
+
+  const handleRegisterClick = () => {
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="h-screen bg-slate-950900 text-white font-poppins px-14 bg-[url('/assets/Maskgroup.png')] bg-center">
       <Toaster />
@@ -64,7 +47,7 @@ const Home = () => {
 
           <button
             className="bg-green-500 rounded-md px-6 py-2 hover:bg-green-700 mt-14"
-            onClick={() => navigate("/auth/register")}
+            onClick={handleRegisterClick}
           >
             Register
           </button>
@@ -73,6 +56,12 @@ const Home = () => {
           <img src={heroImage} alt="hero-image" className="w-[50vw]" />
         </div>
       </main>
+
+      <AccountTypeModal
+        onClose={() => setIsModalOpen(false)}
+        isOpen={isModalOpen}
+        navigate={navigate}
+      />
     </div>
   );
 };

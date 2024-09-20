@@ -32,6 +32,18 @@ export type Organization = {
   maxUsers: number;
   createdAt: string;
 };
+export type School = {
+  id: string;
+  name: string;
+  maxUsers: number;
+  createdAt: string;
+};
+export type Parent = {
+  id: string;
+  name: string;
+  maxUsers: number;
+  createdAt: string;
+};
 
 export type userRole = {
   role: string;
@@ -73,23 +85,44 @@ export const fetchUserByEmail = async (email: string): Promise<User> => {
   let accessToken = localStorage.getItem("net-token") || "";
   accessToken = accessToken.replace(/^"|"$/g, "");
   console.log(accessToken);
+
   const headers = {
     Authorization: `Bearer ${accessToken}`,
   };
+
   const response = await apiClient.get(`/user/${email}`, { headers });
   console.log("Fetched User by Email:", response.data);
+
   return response.data;
 };
+
 export const blockWebsite = async (
   data: BlockFormData,
 ): Promise<MutationResponse> => {
-  const response = await apiClient.post("/block", data);
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+
+  const response = await apiClient.post("/block", data, { headers });
+  console.log("Website Blocked:", response.data);
+
   return response.data;
 };
 
 export const fetchBlockedWebsite = async (): Promise<Website[]> => {
-  const response = await apiClient.get("/block");
-  console.log("Fetched blockWebsite:", response.data);
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+
+  const response = await apiClient.get("/block", { headers });
+  console.log("Fetched Blocked Websites:", response.data);
+
   return response.data;
 };
 
@@ -193,6 +226,96 @@ export const deleteOrganization = async (
     Authorization: `Bearer ${accessToken}`,
   };
   const response = await apiClient.delete(`/organizations/${id}`, { headers });
+  return response.data;
+};
+
+export const fetchParents = async (): Promise<Parent[]> => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.get("/parents", { headers });
+  return response.data;
+};
+
+export const fetchSingleParent = async (id: string): Promise<Parent> => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.get(`/parents/${id}`, { headers });
+  return response.data;
+};
+
+export const updateParent = async (
+  id: string,
+  data: Partial<Parent>,
+): Promise<MutationResponse> => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.patch(`/parents/${id}`, data, {
+    headers,
+  });
+  return response.data;
+};
+
+export const deleteParent = async (id: string): Promise<MutationResponse> => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.delete(`/parents/${id}`, { headers });
+  return response.data;
+};
+
+export const fetchSchools = async (): Promise<School[]> => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.get("/schools", { headers });
+  return response.data;
+};
+
+export const fetchSingleSchool = async (id: string): Promise<School> => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.get(`/schools/${id}`, { headers });
+  return response.data;
+};
+
+export const updateSchool = async (
+  id: string,
+  data: Partial<School>,
+): Promise<MutationResponse> => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.patch(`/schools/${id}`, data, {
+    headers,
+  });
+  return response.data;
+};
+
+export const deleteSchool = async (id: string): Promise<MutationResponse> => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.delete(`/schools/${id}`, { headers });
   return response.data;
 };
 
