@@ -7,11 +7,13 @@ import { postLoginData } from "../services/postData";
 import { loginFormData } from "../types/RegisterForm";
 import { loginSchema } from "../validations/registerSchema";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ColorRing } from "react-loader-spinner";
+import AccountTypeModal from "../components/UserComponents/AccountType";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("net-token");
@@ -23,6 +25,10 @@ const Login = () => {
         navigate("/manager");
       } else if (parsedUser.role === "admin") {
         navigate("/admin");
+      } else if (parsedUser.role === "parent") {
+        navigate("/parent");
+      } else if (parsedUser.role === "school") {
+        navigate("/school");
       }
     }
   }, [navigate]);
@@ -48,7 +54,75 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       // Redirect based on user role
-      if (data.user.role === "manager") {
+      if (data.user.role === "parent") {
+        navigate("/parent");
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            // Send location to backend
+            fetch("http://localhost:4000/api/v1/update-location", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Attach token for authentication
+              },
+              body: JSON.stringify({
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                userId: data.user.userId,
+                latitude,
+                longitude,
+              }),
+            })
+              .then((response) => response.json())
+              .then((locationData) => {
+                console.log("Location logged:", locationData);
+              })
+              .catch((error) => {
+                console.error("Failed to log location:", error);
+                toast.error("Failed to log location.");
+              });
+          },
+          (error) => {
+            console.error("Geolocation error:", error.message);
+            toast.error("Failed to get location.");
+          },
+        );
+      } else if (data.user.role === "school") {
+        navigate("/school");
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            // Send location to backend
+            fetch("http://localhost:4000/api/v1/update-location", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Attach token for authentication
+              },
+              body: JSON.stringify({
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                userId: data.user.userId,
+                latitude,
+                longitude,
+              }),
+            })
+              .then((response) => response.json())
+              .then((locationData) => {
+                console.log("Location logged:", locationData);
+              })
+              .catch((error) => {
+                console.error("Failed to log location:", error);
+                toast.error("Failed to log location.");
+              });
+          },
+          (error) => {
+            console.error("Geolocation error:", error.message);
+            toast.error("Failed to get location.");
+          },
+        );
+      } else if (data.user.role === "manager") {
         navigate("/manager");
         // Fetch user's location and log it if role is "user"
         navigator.geolocation.getCurrentPosition(
@@ -199,8 +273,11 @@ const Login = () => {
         <div className="flex items-center justify-between w-full">
           <div className="flex gap-2 max-sm:flex-wrap">
             <p className="text-gray-500 text-sm">Don't Have An Account?</p>
-            <span className="text-blue-700 text-sm underline hover:cursor-pointer">
-              <Link to="/auth/register">Create Account</Link>
+            <span
+              className="text-blue-700 text-sm underline hover:cursor-pointer"
+              onClick={() => setIsModalOpen(true)}
+            >
+              Create Account
             </span>
           </div>
           <span className="text-gray-500 text-sm underline hover:cursor-pointer">
@@ -220,6 +297,13 @@ const Login = () => {
             colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
           />
         </div>
+      )}
+      {isModalOpen && (
+        <AccountTypeModal
+          onClose={() => setIsModalOpen(false)}
+          isOpen={isModalOpen}
+          navigate={navigate}
+        />
       )}
     </div>
   );

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Navbar from "../components/AdminComponents/Navbar";
-import Sidebar from "../components/AdminComponents/Sidebar";
-export const AdminLayout: React.FC = () => {
+import Navbar from "../components/ParentComponents/Navbar";
+import Sidebar from "../components/ParentComponents/Sidebar";
+export const ParentLayout: React.FC = () => {
   const [menuActive, setMenuActive] = useState<boolean>(false);
   const { pathname } = useLocation();
 
@@ -19,16 +19,14 @@ export const AdminLayout: React.FC = () => {
         return "USER ACTIVITY";
       case "users":
         return "MANAGE USERS";
-      case "filtering":
-        return "WEB FIILTERS";
-      case "organizations":
-        return "ORGANIZATIONS";
-      case "parents":
-        return "PARENTS";
-      case "schools":
-        return "SCHOOLS";
       case "settings":
         return "SETTINGS";
+      case "filtering":
+        return "WEB FIILTERS";
+      case "notifications":
+        return "NOTIFICATIONS";
+      case "location":
+        return "LOCATION";
       default:
         return "DASHBOARD";
     }

@@ -17,7 +17,11 @@ const Sidebar: React.FC<SidebarProps> = ({ menuActive }) => {
 
   if (!isAuthenticated) return null;
   const displayName =
-    user?.role === "manager" ? user.name.toUpperCase() : "ADMIN";
+    user?.role === "parent" ||
+    user?.role === "manager" ||
+    user?.role === "school"
+      ? user.name.toUpperCase()
+      : "ADMIN";
 
   return (
     <div

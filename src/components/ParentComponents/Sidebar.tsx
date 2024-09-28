@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
   SidebarLink,
-  ManagerSidebarLinks,
-} from "../../utils/manager/SideBarLinks";
+  ParentSidebarLinks,
+} from "../../utils/parent/SideBarLinks";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { TbLogout } from "react-icons/tb";
 import { RxHamburgerMenu } from "react-icons/rx";
 import Profile from "../../assets/tim.jpg";
-import useAuth from "../../utils/manager/AuthHook";
+import useAuth from "../../utils/parent/AuthHook";
 
 interface SidebarProps {
   menuActive: boolean;
@@ -65,7 +65,7 @@ const Sidebar: React.FC<SidebarProps> = ({ menuActive }) => {
               isCollapsed ? "items-center" : ""
             } text-gray-400 font-semibold space-y-1 text-[14px]`}
           >
-            {ManagerSidebarLinks.map((item: SidebarLink) => (
+            {ParentSidebarLinks.map((item: SidebarLink) => (
               <li
                 key={item.id}
                 className={`hover:text-white ${
@@ -84,7 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({ menuActive }) => {
                         : "hover:bg-green-600"
                     }`
                   }
-                  to={`/manager${item.link}`}
+                  to={`/parent${item.link}`}
                   data-testid={`navlink-${item.name.toLowerCase()}`}
                 >
                   <div className="flex items-center gap-x-3">

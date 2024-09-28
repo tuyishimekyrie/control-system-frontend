@@ -1,12 +1,14 @@
 import React from "react";
 import { AiTwotoneDashboard } from "react-icons/ai";
-import { MdMonitorHeart } from "react-icons/md";
+// import { MdMonitorHeart } from "react-icons/md";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { RiListSettingsLine } from "react-icons/ri";
 import { PiUsersThree } from "react-icons/pi";
-import { BsFilterCircle } from "react-icons/bs";
+// import { BsFilterCircle } from "react-icons/bs";
 import { VscOrganization } from "react-icons/vsc";
 import { CiLocationOn } from "react-icons/ci";
+import { RiParentLine } from "react-icons/ri";
+import { IoSchoolOutline } from "react-icons/io5";
 
 export type SidebarLink = {
   id: number;
@@ -22,12 +24,12 @@ export const AdminSidebarLinks: SidebarLink[] = [
     icon: AiTwotoneDashboard,
     link: "/",
   },
-  {
-    id: 2,
-    name: "Web Filters",
-    icon: MdMonitorHeart,
-    link: "/rules",
-  },
+  // {
+  //   id: 2,
+  //   name: "Web Filters",
+  //   icon: MdMonitorHeart,
+  //   link: "/rules",
+  // },
   {
     id: 3,
     name: "Web Activity",
@@ -40,12 +42,12 @@ export const AdminSidebarLinks: SidebarLink[] = [
     icon: PiUsersThree,
     link: "/users",
   },
-  {
-    id: 5,
-    name: "Filtering",
-    icon: BsFilterCircle,
-    link: "/filtering",
-  },
+  // {
+  //   id: 5,
+  //   name: "Filtering",
+  //   icon: BsFilterCircle,
+  //   link: "/filtering",
+  // },
   {
     id: 6,
     name: "Organizations",
@@ -54,12 +56,24 @@ export const AdminSidebarLinks: SidebarLink[] = [
   },
   {
     id: 7,
+    name: "Parents",
+    icon: RiParentLine,
+    link: "/parents",
+  },
+  {
+    id: 8,
+    name: "Schools",
+    icon: IoSchoolOutline,
+    link: "/schools",
+  },
+  {
+    id: 9,
     name: "Settings",
     icon: RiListSettingsLine,
     link: "/settings",
   },
   {
-    id: 8,
+    id: 10,
     name: "Location",
     icon: CiLocationOn,
     link: "/location",
