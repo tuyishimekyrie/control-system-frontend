@@ -6,6 +6,7 @@ type ActivityLog = {
   email: string;
   url: string;
   duration: string;
+  createdAt: string;
 };
 
 export const fetchUserLogs = async (): Promise<ActivityLog[]> => {
@@ -22,18 +23,19 @@ export const fetchUserLogs = async (): Promise<ActivityLog[]> => {
   return response.data;
 };
 
-export const fetchTotalTimeSpentPerWebsite = async () => {
+export const fetchTotalTimeSpentPerWebsite = async (selectedFilter: string) => {
   let accessToken = localStorage.getItem("net-token") || "";
   accessToken = accessToken.replace(/^"|"$/g, "");
-  console.log(accessToken);
 
   const headers = {
     Authorization: `Bearer ${accessToken}`,
   };
 
-  const response = await apiClient.get("/user/logs/total-time-per-website", {
-    headers,
-  });
+  const response = await apiClient.get(
+    `/user/logs/total-time-per-website?filter=${selectedFilter}`,
+    { headers },
+  );
+
   console.log("Web Time Spent:", response.data);
   return response.data;
 };

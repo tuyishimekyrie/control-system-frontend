@@ -25,6 +25,7 @@ export type User = {
   macAddress: string;
   ipAddress: string;
   isSubscribed?: string;
+  createdAt: string;
 };
 export type Organization = {
   id: string;

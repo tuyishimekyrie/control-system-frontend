@@ -1,30 +1,30 @@
-import { Bar } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   Title,
   Tooltip,
   Legend,
-  BarElement,
+  ArcElement,
   CategoryScale,
   LinearScale,
 } from "chart.js";
 import { useQuery } from "@tanstack/react-query";
-import { fetchTotalTimeSpentPerWebsite } from "../../services/LogsData";
+import { fetchUsers } from "../../services/postData";
 import { isToday, subDays, isWithinInterval } from "date-fns";
 
 ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  BarElement,
+  ArcElement,
   CategoryScale,
   LinearScale,
 );
 
-const TopWebsitesChart = ({ selectedFilter }: { selectedFilter: string }) => {
+const UserRoleChart = ({ selectedFilter }: { selectedFilter: string }) => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["schooltopsites", selectedFilter],
-    queryFn: () => fetchTotalTimeSpentPerWebsite(selectedFilter),
+    queryKey: ["allusers"],
+    queryFn: fetchUsers,
     staleTime: Infinity,
   });
 
@@ -47,13 +47,10 @@ const TopWebsitesChart = ({ selectedFilter }: { selectedFilter: string }) => {
     return true;
   };
 
-  const filteredData = data
-    ? data.filter((item: { date?: string; url: string }) => {
-        if (item.date) {
-          return applyDateFilter(item.date);
-        }
-        return selectedFilter === "All Time";
-      })
+  const filteredUsers = data
+    ? data.filter((user: { createdAt: string }) =>
+        applyDateFilter(user.createdAt),
+      )
     : [];
 
   if (isLoading)
@@ -69,23 +66,42 @@ const TopWebsitesChart = ({ selectedFilter }: { selectedFilter: string }) => {
       </p>
     );
 
+  const roleCounts = filteredUsers.reduce(
+    (acc, user) => {
+      const role = user.role === "manager" ? "Organizations" : user.role;
+      acc[role] = (acc[role] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
   const chartData = {
-    labels: filteredData.map((item: { url: string }) => item.url),
+    labels: Object.keys(roleCounts),
     datasets: [
       {
-        label: "Total Duration (seconds)",
-        data: filteredData.map(
-          (item: { totalDuration: number }) => item.totalDuration,
-        ),
-        backgroundColor: "rgba(0, 255, 0, 0.2)",
-        borderColor: "rgba(0, 255, 0, 1)",
-        borderWidth: 1.5,
+        label: "User Roles",
+        data: Object.values(roleCounts),
+        backgroundColor: [
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+        ],
+        borderColor: [
+          "rgba(75, 192, 192, 1)",
+          "rgba(255, 99, 132, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(153, 102, 255, 1)",
+        ],
+        borderWidth: 1,
       },
     ],
   };
 
   return (
-    <Bar
+    <Pie
       data={chartData}
       options={{
         responsive: true,
@@ -101,7 +117,7 @@ const TopWebsitesChart = ({ selectedFilter }: { selectedFilter: string }) => {
           },
           title: {
             display: true,
-            text: "Most Visited Websites",
+            text: "Platform's users' Categorization",
             font: {
               size: 16,
               weight: "bold",
@@ -109,48 +125,19 @@ const TopWebsitesChart = ({ selectedFilter }: { selectedFilter: string }) => {
             color: "#ffffff",
           },
           tooltip: {
+            callbacks: {
+              label: (context) => {
+                const label = context.label || "";
+                const value = context.formattedValue || "";
+                const percentage = context.parsed || 0;
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentageValue = ((percentage / total) * 100).toFixed(2);
+                return `${label}: ${value} (${percentageValue}%)`;
+              },
+            },
             bodyColor: "#ffffff",
             titleColor: "#ffffff",
             backgroundColor: "rgba(0, 0, 0, 0.7)",
-          },
-        },
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: "Websites (domain)",
-              align: "center",
-              font: {
-                size: 14,
-              },
-              color: "green",
-            },
-            ticks: {
-              color: "#ffffff",
-              autoSkip: false,
-              maxRotation: 90,
-              minRotation: 45,
-              font: {
-                size: 14,
-              },
-            },
-          },
-          y: {
-            title: {
-              display: true,
-              text: "Total Duration (seconds)",
-              color: "green",
-              font: {
-                size: 14,
-              },
-            },
-            ticks: {
-              color: "#ffffff",
-              stepSize: 500,
-              font: {
-                size: 14,
-              },
-            },
           },
         },
       }}
@@ -158,4 +145,4 @@ const TopWebsitesChart = ({ selectedFilter }: { selectedFilter: string }) => {
   );
 };
 
-export default TopWebsitesChart;
+export default UserRoleChart;
