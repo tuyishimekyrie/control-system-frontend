@@ -99,10 +99,10 @@ const DashboardLocation = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-[60vw]">
+    <div className="flex flex-col md:flex-row h-full w-full">
       {/* Sidebar for List of Locations */}
       <div className="md:w-1/3 bg-gray-800 p-4 overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-4">Locations</h2>
+        <h2 className="text-2xl font-bold mb-4 text-[14px]">Locations</h2>
         {locations.length === 0 ? (
           <p>No locations available.</p>
         ) : (
@@ -110,15 +110,17 @@ const DashboardLocation = () => {
             {locations.map((location) => (
               <li
                 key={location.id}
-                className={`p-3  rounded-lg hover:bg-blue-600 cursor-pointer ${
+                className={`p-3  rounded-lg hover:bg-green-700 cursor-pointer ${
                   selectedLocation?.id === location.id
-                    ? "bg-blue-500"
-                    : "bg-blue-900"
+                    ? "bg-green-700"
+                    : "bg-green-600"
                 }`}
                 onClick={() => handleLocationClick(location)}
               >
-                <p className="font-semibold text-white">{location.userName}</p>
-                <p className="text-xs text-gray-300">
+                <p className="font-semibold text-white text-[14px]">
+                  {location.userName}
+                </p>
+                <p className="text-xs text-gray-300 text-[14px]">
                   {new Date(location.recordedAt).toLocaleString()}
                 </p>
               </li>

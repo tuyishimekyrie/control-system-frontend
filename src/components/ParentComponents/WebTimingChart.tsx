@@ -10,6 +10,7 @@ import {
 } from "chart.js";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTotalTimeSpentPerWebsite } from "../../services/LogsData";
+import { isToday, subDays, isWithinInterval } from "date-fns";
 
 ChartJS.register(
   Title,
@@ -20,12 +21,39 @@ ChartJS.register(
   LinearScale,
 );
 
-const TopWebsitesChart = () => {
+const TopWebsitesChart = ({ selectedFilter }: { selectedFilter: string }) => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["totalTimeSpentPerWebsite"],
-    queryFn: fetchTotalTimeSpentPerWebsite,
+    queryKey: ["parenttopsites", selectedFilter],
+    queryFn: () => fetchTotalTimeSpentPerWebsite(selectedFilter),
     staleTime: Infinity,
   });
+  const applyDateFilter = (dateStr: string): boolean => {
+    const date = new Date(dateStr);
+
+    if (selectedFilter === "Today") {
+      return isToday(date);
+    } else if (selectedFilter === "Last 7 Days") {
+      return isWithinInterval(date, {
+        start: subDays(new Date(), 7),
+        end: new Date(),
+      });
+    } else if (selectedFilter === "Last 30 Days") {
+      return isWithinInterval(date, {
+        start: subDays(new Date(), 30),
+        end: new Date(),
+      });
+    }
+    return true;
+  };
+
+  const filteredData = data
+    ? data.filter((item: { date?: string; url: string }) => {
+        if (item.date) {
+          return applyDateFilter(item.date);
+        }
+        return selectedFilter === "All Time";
+      })
+    : [];
 
   if (isLoading)
     return (
@@ -41,11 +69,13 @@ const TopWebsitesChart = () => {
     );
 
   const chartData = {
-    labels: data.map((item: { url: string }) => item.url),
+    labels: filteredData.map((item: { url: string }) => item.url),
     datasets: [
       {
         label: "Total Duration (seconds)",
-        data: data.map((item: { totalDuration: number }) => item.totalDuration),
+        data: filteredData.map(
+          (item: { totalDuration: number }) => item.totalDuration,
+        ),
         backgroundColor: "rgba(0, 255, 0, 0.2)",
         borderColor: "rgba(0, 255, 0, 1)",
         borderWidth: 1.5,

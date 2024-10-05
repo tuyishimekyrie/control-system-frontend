@@ -16,8 +16,8 @@ import AddCategory from "../pages/adminpages/AddCategory";
 import AddKeyword from "../pages/adminpages/AddKeyword";
 import { ManagerLayout } from "../layouts/ManagersLayout";
 import * as ManagerPages from "../pages/managerpages/index";
-import * as SchoolPages from "../pages/managerpages/index";
-import * as ParentPages from "../pages/managerpages/index";
+import * as SchoolPages from "../pages/schoolpages/index";
+import * as ParentPages from "../pages/parentpages/index";
 import Notification from "../pages/managerpages/Notification";
 import ParentNotification from "../pages/parentpages/Notification";
 import SchoolNotification from "../pages/schoolpages/Notification";
@@ -29,6 +29,7 @@ import ManageSchools from "../pages/adminpages/manageSchools";
 import ManageParents from "../pages/adminpages/manageParents";
 import { Location as AllLocation } from "../pages/adminpages/Location";
 import ForgotPassword from "../pages/forgotPassword";
+import ResetPassword from "../pages/resetPassword";
 import { ParentLayout } from "../layouts/ParentLayout";
 import { SchoolLayout } from "../layouts/SchoolLayout";
 import GeoFencing from "../pages/managerpages/GeoFencing";
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
   {
     path: "/auth/forgot-password",
     element: <ForgotPassword />,
+  },
+  {
+    path: "/auth/reset-password",
+    element: <ResetPassword />,
   },
   {
     path: "admin",

@@ -1,14 +1,53 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { fetchUserLogs } from "../../services/LogsData";
 import axios from "axios";
-import { format } from "date-fns";
+import { format, isToday, subDays, isWithinInterval } from "date-fns";
+import { RiFilter3Fill } from "react-icons/ri";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+
+const useOutsideClick = (
+  ref: React.RefObject<HTMLDivElement>,
+  handler: () => void,
+) => {
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        handler();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [ref, handler]);
+};
 
 const WebActivity = () => {
+  const initialFilter = localStorage.getItem("selectedFilter") || "Last 7 Days";
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
+  const [filterPopupVisible, setFilterPopupVisible] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState(initialFilter);
+  const [isExporting, setIsExporting] = useState(false);
+  const itemsPerPage = 20;
+
+  const filterOptions = [
+    { label: "All Time", value: "All Time" },
+    { label: "Today", value: "Today" },
+    { label: "A Week", value: "Last 7 Days" },
+    { label: "A month", value: "Last 30 Days" },
+  ];
+
+  const popupRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(popupRef, () => setFilterPopupVisible(false));
+
+  const handleFilterChange = (value: string) => {
+    setSelectedFilter(value);
+    setFilterPopupVisible(false);
+    localStorage.setItem("selectedFilter", value);
+  };
 
   const { data, error, isLoading, isError } = useQuery({
     queryKey: ["usersLogs"],
@@ -29,11 +68,31 @@ const WebActivity = () => {
       )
     : [];
 
+  const applyDateFilter = (dateStr: string): boolean => {
+    const date = new Date(dateStr);
+
+    if (selectedFilter === "Today") {
+      return isToday(date);
+    } else if (selectedFilter === "Last 7 Days") {
+      return isWithinInterval(date, {
+        start: subDays(new Date(), 7),
+        end: new Date(),
+      });
+    } else if (selectedFilter === "Last 30 Days") {
+      return isWithinInterval(date, {
+        start: subDays(new Date(), 30),
+        end: new Date(),
+      });
+    }
+    return true;
+  };
+
   const filteredActivities = activities.filter(
     (activity) =>
-      activity.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      activity.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      activity.url.toLowerCase().includes(searchTerm.toLowerCase()),
+      applyDateFilter(activity.date) &&
+      (activity.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        activity.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        activity.url.toLowerCase().includes(searchTerm.toLowerCase())),
   );
 
   const paginatedActivities = filteredActivities.slice(
@@ -45,6 +104,84 @@ const WebActivity = () => {
 
   const formatDate = (dateStr: string) => {
     return format(new Date(dateStr), "dd-MMM-yyyy");
+  };
+
+  const exportAsPDF = async () => {
+    setIsExporting(true);
+    const pdf = new jsPDF("l", "mm", "tabloid");
+    const input = document.getElementById("web-activity-content");
+
+    if (input) {
+      const totalPages = Math.ceil(filteredActivities.length / itemsPerPage);
+
+      for (let page = 1; page <= totalPages; page++) {
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = page * itemsPerPage;
+        const currentPageActivities = filteredActivities.slice(
+          startIndex,
+          endIndex,
+        );
+
+        const tableHtml = `
+          <div style="background-color: #161b2d; color: white; padding: 20px;">
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">${selectedFilter.toUpperCase()} ONLINE USER'S ACTIVITIES</h1>
+            <p className="text-green-600 text-[14px]" style=" margin-bottom: 40px">
+              This report shows the Monitored and reviewed ${selectedFilter.toUpperCase()} online user's web activities in real-time.
+            </p>
+            <table class="min-w-[800px] w-full border-collapse table-fixed">
+              <thead class="text-[15px] font-bold">
+                <tr style="background-color: #1F2A45;" class="text-gray-300">
+                  <th class="border border-gray-700 p-3 text-left whitespace-nowrap max-w-[150px]">Date</th>
+                  <th class="border border-gray-700 p-3 text-left whitespace-nowrap max-w-[200px]">Name</th>
+                  <th class="border border-gray-700 p-3 text-left whitespace-nowrap max-w-[250px]">Email Address</th>
+                  <th class="border border-gray-700 p-3 text-left whitespace-nowrap max-w-[400px]">URL</th>
+                  <th class="border border-gray-700 p-3 text-left whitespace-nowrap max-w-[150px]">Duration</th>
+                </tr>
+              </thead>
+              <tbody class="text-[14px]">
+                ${currentPageActivities
+                  .map(
+                    (activity) => `
+                  <tr class="border border-gray-700 text-gray-400" style="background-color: #1F2A40;">
+                    <td class="border border-gray-700 p-3 whitespace-nowrap">${formatDate(activity.date)}</td>
+                    <td class="border border-gray-700 p-3 whitespace-nowrap">${activity.name}</td>
+                    <td class="border border-gray-700 p-3 whitespace-nowrap">${activity.email}</td>
+                    <td class="border border-gray-700 p-3 break-words"><a href="${activity.url}" target="_blank" rel="noopener noreferrer" class="text-green-600 underline">${activity.url.length > 40 ? `${activity.url.substring(0, 25)}...` : activity.url}</a></td>
+                    <td class="border border-gray-700 p-3 whitespace-nowrap">${activity.duration}</td>
+                  </tr>
+                `,
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>
+        `;
+
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = tableHtml;
+        document.body.appendChild(tempDiv);
+
+        await html2canvas(tempDiv, {
+          backgroundColor: "#161b2d",
+          scale: 2,
+        }).then((canvas) => {
+          const imgData = canvas.toDataURL("image/png");
+          const imgProps = pdf.getImageProperties(imgData);
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+          pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        });
+
+        document.body.removeChild(tempDiv);
+
+        if (page < totalPages) {
+          pdf.addPage();
+        }
+      }
+
+      pdf.save("Web Activity Report.pdf");
+    }
+    setIsExporting(false);
   };
 
   return (
@@ -67,10 +204,44 @@ const WebActivity = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <div
+            className="flex items-center space-x-2 p-2 text-gray-200 bg-green-600 hover:bg-green-700 rounded-sm text-[16px] pr-3 pl-3 cursor-pointer ml-4"
+            onClick={() => setFilterPopupVisible(!filterPopupVisible)}
+          >
+            <span className="text-[14px]">{selectedFilter}</span>
+            <RiFilter3Fill />
+          </div>
+          {filterPopupVisible && (
+            <div
+              ref={popupRef}
+              className="absolute top-16 right-5 text-gray-200 bg-gray-800 rounded-lg shadow-lg border border-gray-700"
+            >
+              <div className="p-4 text-gray-200">
+                <ul>
+                  {filterOptions.map((option) => (
+                    <li
+                      key={option.value}
+                      className="p-2 hover:bg-gray-700 text-gray-200 rounded cursor-pointer"
+                      onClick={() => handleFilterChange(option.value)}
+                    >
+                      {option.label}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+          <button
+            className="ml-4 p- text-gray-200 bg-blue-600 hover:bg-blue-700 rounded-sm text-[16px] pr-3 pl-3 cursor-pointer"
+            onClick={exportAsPDF}
+            disabled={isExporting} // Disable the button while exporting
+          >
+            {isExporting ? "Processing..." : "Export as PDF"}
+          </button>
         </div>
       </div>
 
-      <div className="overflow-x-auto max-w-full">
+      <div id="web-activity-content" className="overflow-x-auto max-w-full">
         {isLoading ? (
           <p className="text-green-600 text-center">Loading activities...</p>
         ) : (

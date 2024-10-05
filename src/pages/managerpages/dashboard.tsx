@@ -6,8 +6,10 @@ import { fetchBlockedWebsite, fetchUsers } from "../../services/postData";
 import { fetchUserLogs } from "../../services/LogsData";
 import TopWebsitesChart from "../../components/ManagerComponents/WebTimingChart";
 import { Website } from "../../types/BlockWebsite";
-import { format } from "date-fns";
 import DashboardLocation from "../../components/ManagerComponents/DashboardLocation";
+import { format, isToday, subDays, isWithinInterval } from "date-fns";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const useOutsideClick = (
   ref: React.RefObject<HTMLDivElement>,
@@ -26,10 +28,13 @@ const useOutsideClick = (
 };
 
 export const Dashboard = () => {
+  const initialFilter = localStorage.getItem("selectedFilter") || "Last 7 Days";
   const [filterPopupVisible, setFilterPopupVisible] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState("Last 7 Days");
+  const [selectedFilter, setSelectedFilter] = useState(initialFilter);
+  const [exportingPDF, setExportingPDF] = useState(false);
 
   const filterOptions = [
+    { label: "All Time", value: "All Time" },
     { label: "Today", value: "Today" },
     { label: "A Week", value: "Last 7 Days" },
     { label: "A month", value: "Last 30 Days" },
@@ -41,6 +46,7 @@ export const Dashboard = () => {
   const handleFilterChange = (value: string) => {
     setSelectedFilter(value);
     setFilterPopupVisible(false);
+    localStorage.setItem("selectedFilter", value);
   };
 
   const {
@@ -48,7 +54,7 @@ export const Dashboard = () => {
     isLoading: isUsersLoading,
     isError: isUsersError,
   } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["managerusers"],
     queryFn: fetchUsers,
     staleTime: Infinity,
   });
@@ -58,30 +64,78 @@ export const Dashboard = () => {
     isLoading: isLogsLoading,
     isError: isLogsError,
   } = useQuery({
-    queryKey: ["logs"],
+    queryKey: ["managerlogs"],
     queryFn: fetchUserLogs,
     staleTime: Infinity,
   });
 
   const { data } = useQuery({
-    queryKey: ["Website"],
+    queryKey: ["managerwebsite"],
     queryFn: fetchBlockedWebsite,
     staleTime: Infinity,
   });
 
   const blockedData: Website[] = data ?? [];
 
+  const applyDateFilter = (dateStr: string): boolean => {
+    const date = new Date(dateStr);
+
+    if (selectedFilter === "Today") {
+      return isToday(date);
+    } else if (selectedFilter === "Last 7 Days") {
+      return isWithinInterval(date, {
+        start: subDays(new Date(), 7),
+        end: new Date(),
+      });
+    } else if (selectedFilter === "Last 30 Days") {
+      return isWithinInterval(date, {
+        start: subDays(new Date(), 30),
+        end: new Date(),
+      });
+    }
+    return true;
+  };
+
+  const filteredUsersData = usersData
+    ? usersData.filter((user) => applyDateFilter(user.createdAt))
+    : [];
+  const filteredLogsData = logsData
+    ? logsData.filter((log) => applyDateFilter(log.date))
+    : [];
+  const filteredBlockedData = blockedData.filter((website) =>
+    applyDateFilter(website.createdAt),
+  );
+
   if (isUsersError || isLogsError) {
     return <p className="text-red-600">Error fetching data</p>;
   }
 
-  const userCount = usersData ? usersData.length : 0;
-  const logCount = logsData ? 0 : 0;
-
-  const recentBlockedWebsites = blockedData.slice(0, 9);
+  const userCount = filteredUsersData.length;
+  const logCount = filteredLogsData.length;
+  const recentBlockedWebsites = filteredBlockedData.slice(0, 9);
 
   const formatDate = (dateStr: string) => {
     return format(new Date(dateStr), "dd-MMM-yyyy");
+  };
+
+  const exportAsPDF = async () => {
+    setExportingPDF(true);
+    const input = document.getElementById("dashboard-content");
+    if (input) {
+      html2canvas(input, {
+        backgroundColor: "#161b2d",
+        scale: 2,
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("l", "mm", "tabloid");
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save("Manager Dashboard Report.pdf");
+        setExportingPDF(false);
+      });
+    }
   };
 
   return (
@@ -117,9 +171,19 @@ export const Dashboard = () => {
             </div>
           </div>
         )}
+        <button
+          className="ml-4 p-2 bg-blue-600 hover:bg-blue-700 rounded-sm text-[16px] pr-3 pl-3 cursor-pointer"
+          onClick={exportAsPDF}
+          disabled={exportingPDF}
+        >
+          {exportingPDF ? "Processing..." : "Export as PDF"}
+        </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
+      <div
+        id="dashboard-content"
+        className="grid grid-cols-1 lg:grid-cols-3 gap-2"
+      >
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 col-span-2">
           <div
             className="p-6 rounded-sm"
@@ -162,7 +226,7 @@ export const Dashboard = () => {
               {isLogsLoading ? (
                 <span className="text-[14px]">Loading...</span>
               ) : (
-                blockedData.length
+                filteredBlockedData.length
               )}
             </div>
           </div>
@@ -198,7 +262,7 @@ export const Dashboard = () => {
           className="rounded-sm col-span-2 text-[14px] text-white p-3 flex justify-center"
           style={{ backgroundColor: "#1F2A40" }}
         >
-          <TopWebsitesChart />
+          <TopWebsitesChart selectedFilter={selectedFilter} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-1 col-span-3 ">
@@ -206,13 +270,6 @@ export const Dashboard = () => {
             className="p-6 rounded-sm "
             style={{ backgroundColor: "#1F2A40" }}
           >
-            <div className="flex items-center justify-start mb-8">
-              <div className="flex items-center mr-16">
-                <h2 className="text-[16px] font-bold mr-4">
-                  Location Tracking
-                </h2>
-              </div>
-            </div>
             <div className="h-[50vh] w-full ">
               <DashboardLocation />
             </div>
