@@ -20,10 +20,10 @@ ChartJS.register(
   LinearScale,
 );
 
-const TopWebsitesChart = () => {
+const TopWebsitesChart = ({ selectedFilter }: { selectedFilter: string }) => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["adminTotalTimeSpentPerWebsite"],
-    queryFn: fetchTotalTimeSpentPerWebsite,
+    queryKey: ["adminTotalTimeSpentPerWebsite", selectedFilter],
+    queryFn: () => fetchTotalTimeSpentPerWebsite(selectedFilter),
     staleTime: Infinity,
   });
 
