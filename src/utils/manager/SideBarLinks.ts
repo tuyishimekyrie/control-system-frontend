@@ -1,6 +1,6 @@
 import React from "react";
 import { AiTwotoneDashboard } from "react-icons/ai";
-import { MdMonitorHeart } from "react-icons/md";
+import { MdMonitorHeart, MdOutlineCircle } from "react-icons/md";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { RiListSettingsLine } from "react-icons/ri";
 import { PiUsersThree } from "react-icons/pi";
@@ -57,6 +57,12 @@ export const ManagerSidebarLinks: SidebarLink[] = [
     name: "Location",
     icon: CiLocationOn,
     link: "/location",
+  },
+  {
+    id: 9,
+    name: "GeoFencing",
+    icon: MdOutlineCircle,
+    link: "/geofencing",
   },
   {
     id: 5,

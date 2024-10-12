@@ -31,6 +31,7 @@ import { Location as AllLocation } from "../pages/adminpages/Location";
 import ForgotPassword from "../pages/forgotPassword";
 import { ParentLayout } from "../layouts/ParentLayout";
 import { SchoolLayout } from "../layouts/SchoolLayout";
+import GeoFencing from "../pages/managerpages/geoFencing";
 
 export const router = createBrowserRouter([
   {
@@ -91,6 +92,7 @@ export const router = createBrowserRouter([
       { path: "add-keyword", element: <ManagerPages.AddKeyword /> },
       { path: "notifications", element: <Notification /> },
       { path: "location", element: <Location /> },
+      { path: "geofencing", element: <GeoFencing /> },
     ],
   },
   {
