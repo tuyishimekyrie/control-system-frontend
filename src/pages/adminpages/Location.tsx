@@ -172,7 +172,7 @@ export const Location: React.FC = () => {
               center={[selectedLocation.latitude, selectedLocation.longitude]}
               zoom={13}
               scrollWheelZoom={false}
-              style={{ height: "300px", width: "500px" }}
+              style={{ height: "500px", width: "800px" }}
             >
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               <Marker

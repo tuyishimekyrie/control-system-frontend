@@ -21,6 +21,8 @@ export const Settings: React.FC = () => {
     staleTime: Infinity,
   });
 
+  console.log(data);
+
   if (isLoading) {
     return (
       <div
@@ -76,7 +78,7 @@ export const Settings: React.FC = () => {
       style={{ backgroundColor: "#161b2d" }}
     >
       <div
-        className="text-center p-10 rounded-lg shadow-lg"
+        className="text-start p-10 rounded-lg shadow-lg"
         style={{ backgroundColor: "#1F2A45" }}
       >
         <h1 className="text-[20px] font-bold text-green-500 mb-4">

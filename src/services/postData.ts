@@ -37,6 +37,14 @@ export type userRole = {
   role: string;
 };
 
+export type Location = {
+  id: string;
+  latitude: number;
+  longitude: number;
+  recordedAt: Date;
+  userId: string;
+};
+
 export const postData = async (
   data: RegisterRequestData,
 ): Promise<MutationResponse> => {
@@ -76,7 +84,7 @@ export const fetchUserByEmail = async (email: string): Promise<User> => {
   const headers = {
     Authorization: `Bearer ${accessToken}`,
   };
-  const response = await apiClient.get(`/user/${email}`, { headers });
+  const response = await apiClient.get(`/userEmail/${email}`, { headers });
   console.log("Fetched User by Email:", response.data);
   return response.data;
 };
@@ -225,5 +233,11 @@ export const postForgotPassword = async (
 export const getUserByEmail = async (email: string): Promise<User> => {
   const response = await apiClient.get(`/user/${email}`);
   console.log("Fetched User by Email:", response.data);
+  return response.data;
+};
+
+export const getAllLocations = async (): Promise<Location> => {
+  const response = await apiClient.get("/location");
+  console.log("location Data", response);
   return response.data;
 };
