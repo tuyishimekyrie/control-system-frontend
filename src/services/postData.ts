@@ -57,14 +57,6 @@ export type Location = {
   userId: string;
 };
 
-export type Location = {
-  id: string;
-  latitude: number;
-  longitude: number;
-  recordedAt: Date;
-  userId: string;
-};
-
 export const postData = async (
   data: RegisterRequestData,
 ): Promise<MutationResponse> => {
