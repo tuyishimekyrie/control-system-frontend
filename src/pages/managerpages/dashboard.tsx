@@ -7,6 +7,7 @@ import { fetchUserLogs } from "../../services/LogsData";
 import TopWebsitesChart from "../../components/ManagerComponents/WebTimingChart";
 import { Website } from "../../types/BlockWebsite";
 import { format } from "date-fns";
+import DashboardLocation from "../../components/ManagerComponents/DashboardLocation";
 
 const useOutsideClick = (
   ref: React.RefObject<HTMLDivElement>,
@@ -200,22 +201,24 @@ export const Dashboard = () => {
           <TopWebsitesChart />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 col-span-3">
+        <div className="grid grid-cols-1 lg:grid-cols-1 col-span-3 ">
           <div
-            className="p-6 rounded-sm"
+            className="p-6 rounded-sm "
             style={{ backgroundColor: "#1F2A40" }}
           >
             <div className="flex items-center justify-start mb-8">
               <div className="flex items-center mr-16">
                 <h2 className="text-[16px] font-bold mr-4">
-                  Location Tracking (Pie Chart)
+                  Location Tracking
                 </h2>
               </div>
             </div>
-            <div className="h-60"></div>
+            <div className="h-[50vh] w-full ">
+              <DashboardLocation />
+            </div>
           </div>
 
-          <div
+          {/* <div
             className="p-6 rounded-sm lg:col-span-2"
             style={{ backgroundColor: "#1F2A40" }}
           >
@@ -227,7 +230,7 @@ export const Dashboard = () => {
               </div>
             </div>
             <div className="h-60"></div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

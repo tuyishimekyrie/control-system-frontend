@@ -62,9 +62,9 @@ function BlockWebsite() {
         )}
 
         <input
-          type="url"
+          type="text"
           {...register("url")}
-          id="url"
+          id="text"
           placeholder="URL"
           className="border border-slate-400 px-4 rounded-sm py-1 focus:outline-none"
         />
