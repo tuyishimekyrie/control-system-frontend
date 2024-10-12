@@ -57,6 +57,14 @@ export type Location = {
   userId: string;
 };
 
+export type Location = {
+  id: string;
+  latitude: number;
+  longitude: number;
+  recordedAt: Date;
+  userId: string;
+};
+
 export const postData = async (
   data: RegisterRequestData,
 ): Promise<MutationResponse> => {
@@ -97,7 +105,6 @@ export const fetchUserByEmail = async (email: string): Promise<User> => {
   const headers = {
     Authorization: `Bearer ${accessToken}`,
   };
-
   const response = await apiClient.get(`/user/${email}`, { headers });
   console.log("Fetched User by Email:", response.data);
 
