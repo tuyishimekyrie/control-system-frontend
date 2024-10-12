@@ -31,7 +31,7 @@ import { Location as AllLocation } from "../pages/adminpages/Location";
 import ForgotPassword from "../pages/forgotPassword";
 import { ParentLayout } from "../layouts/ParentLayout";
 import { SchoolLayout } from "../layouts/SchoolLayout";
-import GeoFencing from "../pages/managerpages/geoFencing";
+import GeoFencing from "../pages/managerpages/GeoFencing";
 
 export const router = createBrowserRouter([
   {
