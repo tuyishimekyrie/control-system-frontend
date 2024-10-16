@@ -25,6 +25,7 @@ export type User = {
   macAddress: string;
   ipAddress: string;
   isSubscribed?: string;
+  createdAt: string;
 };
 export type Organization = {
   id: string;
@@ -339,13 +340,30 @@ export const updateUser = async (
   return response.data;
 };
 
-export const postForgotPassword = async (
+export interface ResetLinkResponse {
+  message: string;
+}
+
+export const sendResetLink = async (
   email: string,
+): Promise<ResetLinkResponse> => {
+  const response = await apiClient.post("/auth/request-password-reset", {
+    email,
+  });
+  return response.data;
+};
+
+export interface ResetPasswordResponse {
+  message: string;
+}
+
+export const resetPassword = async (
+  token: string,
   newPassword: string,
   confirmPassword: string,
-): Promise<MutationResponse> => {
-  const response = await apiClient.patch("/auth/update-password", {
-    email,
+): Promise<ResetPasswordResponse> => {
+  const response = await apiClient.post("/auth/reset-password", {
+    token,
     newPassword,
     confirmPassword,
   });

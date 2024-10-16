@@ -1,16 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import L, { Icon } from "leaflet";
-
-// Fixing the default icon issue in React Leaflet
-// Importing marker icons
+import { Icon } from "leaflet";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
-// Creating a default icon
 const defaultIcon = new Icon({
   iconUrl: markerIcon,
   iconRetinaUrl: markerIcon2x,
@@ -29,6 +25,22 @@ interface LocationData {
   recordedAt: string;
 }
 
+const MapCenterHandler = ({
+  selectedLocation,
+}: {
+  selectedLocation: LocationData | null;
+}) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (selectedLocation) {
+      map.flyTo([selectedLocation.latitude, selectedLocation.longitude], 13);
+    }
+  }, [selectedLocation, map]);
+
+  return null;
+};
+
 const DashboardLocation = () => {
   const [locations, setLocations] = useState<LocationData[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<LocationData | null>(
@@ -37,19 +49,15 @@ const DashboardLocation = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const mapRef = useRef<L.Map>(null);
-
   useEffect(() => {
     const fetchLocations = async () => {
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_API_BASE_URL}/location`,
         );
-
         const fetchedLocations: LocationData[] = response.data.data;
         setLocations(fetchedLocations);
 
-        // Optionally set the first location as selected
         if (fetchedLocations.length > 0) {
           setSelectedLocation(fetchedLocations[0]);
         }
@@ -65,17 +73,6 @@ const DashboardLocation = () => {
     fetchLocations();
   }, []);
 
-  const handleLocationClick = (location: LocationData) => {
-    setSelectedLocation(location);
-
-    // Center the map on the selected location
-    if (mapRef.current) {
-      mapRef.current.setView([location.latitude, location.longitude], 13, {
-        animate: true,
-      });
-    }
-  };
-
   if (loading) {
     return <h1 className="text-center mt-10">Loading...</h1>;
   }
@@ -85,27 +82,24 @@ const DashboardLocation = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-[60vw]">
-      {/* Sidebar for List of Locations */}
+    <div className="flex flex-col md:flex-row h-full w-full">
       <div className="md:w-1/3 bg-gray-800 p-4 overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-4">Locations</h2>
         {locations.length === 0 ? (
-          <p>No locations available.</p>
+          <p className="text-[14px]">No locations available.</p>
         ) : (
           <ul className="space-y-2">
             {locations.map((location) => (
               <li
                 key={location.id}
-                className={`p-3  rounded-lg hover:bg-blue-600 cursor-pointer ${
+                onClick={() => setSelectedLocation(location)}
+                className={`p-3 rounded-lg hover:bg-green-700 cursor-pointer ${
                   selectedLocation?.id === location.id
-                    ? "bg-blue-500"
-                    : "bg-blue-800"
+                    ? "bg-green-700"
+                    : "bg-green-600"
                 }`}
-                onClick={() => handleLocationClick(location)}
               >
-                <p className="font-semibold text-white">{location.userName}</p>
-                <p className="text-sm text-gray-300">
-                  {new Date(location.recordedAt).toLocaleString()}
+                <p className="font-semibold text-white text-[14px]">
+                  {location.userName}
                 </p>
               </li>
             ))}
@@ -113,19 +107,20 @@ const DashboardLocation = () => {
         )}
       </div>
 
-      {/* Map Container */}
       <div className="w-full h-full">
         <MapContainer
           center={
             selectedLocation
               ? [selectedLocation.latitude, selectedLocation.longitude]
-              : [0, 0] // Default center if no location is selected
+              : [0, 0]
           }
           zoom={selectedLocation ? 13 : 2}
           scrollWheelZoom={true}
           style={{ height: "100%", width: "100%" }}
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+          <MapCenterHandler selectedLocation={selectedLocation} />
 
           {locations.map((location) => (
             <Marker
