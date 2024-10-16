@@ -33,6 +33,7 @@ import ResetPassword from "../pages/resetPassword";
 import { ParentLayout } from "../layouts/ParentLayout";
 import { SchoolLayout } from "../layouts/SchoolLayout";
 import GeoFencing from "../pages/managerpages/GeoFencing";
+import ErrorPage from "../pages/ErrorPage";
 
 export const router = createBrowserRouter([
   {
@@ -133,5 +134,9 @@ export const router = createBrowserRouter([
       { path: "notifications", element: <SchoolNotification /> },
       { path: "location", element: <SchoolLocation /> },
     ],
+  },
+  {
+    path: "*", // Catch-all route for undefined paths
+    element: <ErrorPage />,
   },
 ]);
