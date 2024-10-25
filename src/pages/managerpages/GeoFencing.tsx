@@ -13,6 +13,7 @@ import L from "leaflet";
 // Leaflet marker icon fix for React-Leaflet
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 import iconShadowUrl from "leaflet/dist/images/marker-shadow.png";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const DefaultIcon = L.icon({
   iconUrl: iconUrl,
@@ -23,6 +24,7 @@ const DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 interface Geofence {
+  id?: string;
   latitude: number;
   longitude: number;
   radius: number;
@@ -31,10 +33,9 @@ interface Geofence {
 const GeoFencing = () => {
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
-  const [radius, setRadius] = useState<number>(100); // Default radius in meters
-  const [geofences, setGeofences] = useState<Geofence[]>([]); // State to store fetched geofences
-  const [organizationId, setOrganizationId] = useState<string | null>(null); // State to store organization ID
-
+  const [radius, setRadius] = useState<number>(100);
+  const [geofences, setGeofences] = useState<Geofence[]>([]);
+  const [organizationId, setOrganizationId] = useState<string | null>(null);
   // Fetch organizationId from local storage
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -47,7 +48,7 @@ const GeoFencing = () => {
   // Fetch stored geofences when the component mounts
   useEffect(() => {
     const fetchGeofences = async () => {
-      if (!organizationId) return; // Do not fetch if organizationId is not set
+      if (!organizationId) return;
       try {
         const response = await fetch(
           `${import.meta.env.VITE_API_BASE_URL}/geofence?organizationId=${organizationId}`,
@@ -55,6 +56,7 @@ const GeoFencing = () => {
         if (response.ok) {
           const data = await response.json();
           setGeofences(data);
+          console.log(data);
         } else {
           throw new Error("Failed to fetch geofences");
         }
@@ -64,7 +66,7 @@ const GeoFencing = () => {
     };
 
     fetchGeofences();
-  }, [organizationId]); // Run effect whenever organizationId changes
+  }, [organizationId]);
 
   // Custom hook to handle map clicks
   const LocationMarker = () => {
@@ -119,13 +121,37 @@ const GeoFencing = () => {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/geofence`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id }),
+        },
+      );
+
+      if (response.ok) {
+        toast.success("Geofence deleted successfully!");
+        window.location.reload();
+      } else {
+        throw new Error("Failed to delete geofence");
+      }
+    } catch (error) {
+      toast.error("Error deleting geofence");
+    }
+  };
+
   return (
-    <div className="geofencing-container flex flex-col items-center p-6 bg-gray-100 min-h-screen">
+    <div className="geofencing-container flex flex-col items-center p-6 bg-gray-100 min-h-screen ">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">
         Setup Geofencing
       </h2>
 
-      <div className="map-container w-full lg:w-3/4 h-96 mb-6">
+      <div className="map-container w-[75vw]   h-96 mb-6">
         {/* Leaflet Map centered on Rwanda */}
         <MapContainer
           center={[-1.9403, 29.8739]} // Set default location to Rwanda
@@ -169,6 +195,43 @@ const GeoFencing = () => {
           Create Geofence
         </button>
       </div>
+      {geofences.length > 0 && (
+        <div className="my-10">
+          <p className="text-xl font-semibold mb-4">Geofence Data</p>
+          {geofences.map((geofence, index) => (
+            <table key={index} className="w-full mb-4 border-2 border-gray-300">
+              <thead className="bg-gray-200">
+                <tr>
+                  <th className="py-2 px-4 border border-gray-300">Latitude</th>
+                  <th className="py-2 px-4 border border-gray-300">
+                    Longitude
+                  </th>
+                  <th className="py-2 px-4 border border-gray-300">Radius</th>
+                  <th className="py-2 px-4 border border-gray-300">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="py-2 px-4 border border-gray-300">
+                    {geofence.latitude}
+                  </td>
+                  <td className="py-2 px-4 border border-gray-300">
+                    {geofence.longitude}
+                  </td>
+                  <td className="py-2 px-4 border border-gray-300">
+                    {geofence.radius}
+                  </td>
+                  <td className="py-2 px-4 border border-gray-300">
+                    <div onClick={() => handleDelete(geofence.id!)}>
+                      <RiDeleteBin6Line className="h-10 w-6 t hover:cursor-pointer hover:text-red-400" />
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
