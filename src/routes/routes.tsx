@@ -90,7 +90,7 @@ export const router = createBrowserRouter([
       { index: true, element: <ManagerPages.Dashboard /> },
       { path: "rules", element: <ManagerPages.WebFilterRules /> },
       { path: "logs", element: <ManagerPages.WebActivity /> },
-      { path: "settings", element: <ManagerPages.Settings /> },
+      { path: "settings", element: <Settings /> },
       { path: "users", element: <ManagerPages.ManageUserRoles /> },
       { path: "filtering", element: <ManagerPages.FilteringKeyword /> },
       { path: "add-blocked-url", element: <ManagerPages.AddBlockedURL /> },
@@ -108,7 +108,7 @@ export const router = createBrowserRouter([
       { index: true, element: <ParentPages.Dashboard /> },
       { path: "rules", element: <ParentPages.WebFilterRules /> },
       { path: "logs", element: <ParentPages.WebActivity /> },
-      { path: "settings", element: <ParentPages.Settings /> },
+      { path: "settings", element: <Settings /> },
       { path: "users", element: <ParentPages.ManageUserRoles /> },
       { path: "filtering", element: <ParentPages.FilteringKeyword /> },
       { path: "add-blocked-url", element: <ParentPages.AddBlockedURL /> },
@@ -125,7 +125,7 @@ export const router = createBrowserRouter([
       { index: true, element: <SchoolPages.Dashboard /> },
       { path: "rules", element: <SchoolPages.WebFilterRules /> },
       { path: "logs", element: <SchoolPages.WebActivity /> },
-      { path: "settings", element: <SchoolPages.Settings /> },
+      { path: "settings", element: <Settings /> },
       { path: "users", element: <SchoolPages.ManageUserRoles /> },
       { path: "filtering", element: <SchoolPages.FilteringKeyword /> },
       { path: "add-blocked-url", element: <SchoolPages.AddBlockedURL /> },
@@ -136,7 +136,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "*", // Catch-all route for undefined paths
+    path: "*",
     element: <ErrorPage />,
   },
 ]);
