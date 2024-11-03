@@ -17,10 +17,13 @@ type MutationResponse = {
   };
 };
 export type User = {
+  data: any;
+  user: any;
   id: string;
   name: string;
   email: string;
   username: string;
+  image: any;
   role: string;
   macAddress: string;
   ipAddress: string;
@@ -99,8 +102,6 @@ export const fetchUserByEmail = async (email: string): Promise<User> => {
     Authorization: `Bearer ${accessToken}`,
   };
   const response = await apiClient.get(`/user/${email}`, { headers });
-  console.log("Fetched User by Email:", response.data);
-
   return response.data;
 };
 

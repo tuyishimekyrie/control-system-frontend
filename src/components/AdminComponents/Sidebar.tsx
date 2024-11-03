@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { SidebarLink, AdminSidebarLinks } from "../../utils/admin/SideBarLinks";
 import { MdKeyboardArrowRight } from "react-icons/md";
@@ -6,14 +7,35 @@ import { TbLogout } from "react-icons/tb";
 import { RxHamburgerMenu } from "react-icons/rx";
 import Profile from "../../assets/tim.jpg";
 import useAuth from "../../utils/admin/AuthHook";
+import { fetchUserByEmail } from "../../services/postData";
 
 interface SidebarProps {
   menuActive: boolean;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ menuActive }) => {
+  const [profile, setProfile] = useState<any>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { isAuthenticated, user, logout } = useAuth();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+      const { email } = JSON.parse(storedUser);
+
+      if (email) {
+        fetchUserByEmail(email)
+          .then((response) => {
+            setProfile(response.user);
+            console.log(response.user);
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+          });
+      }
+    }
+  }, []);
 
   if (!isAuthenticated) return null;
   const displayName =
@@ -43,9 +65,13 @@ const Sidebar: React.FC<SidebarProps> = ({ menuActive }) => {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden">
                 <img
-                  src={Profile}
+                  src={
+                    profile?.image
+                      ? `http://localhost:4000/${profile.image}`
+                      : Profile
+                  }
                   alt="Profile"
-                  className="w-full h-full object-cover rounded-full"
+                  className="rounded-full w-full h-full object-cover"
                 />
               </div>
               <h1 className="text-green-600 text-lg">{displayName}</h1>
