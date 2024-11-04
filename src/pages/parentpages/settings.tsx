@@ -109,7 +109,9 @@ const Settings: React.FC = () => {
             >
               <img
                 src={
-                  user.image ? `http://localhost:4000/${user.image}` : Profile
+                  user.image
+                    ? `https://control-system-backend.onrender.com/${user.image}`
+                    : Profile
                 }
                 alt="Profile"
                 className="rounded-full w-full h-full object-cover"
@@ -149,7 +151,7 @@ const Settings: React.FC = () => {
                 newImage
                   ? URL.createObjectURL(newImage)
                   : user.image
-                    ? `http://localhost:4000/${user.image}`
+                    ? `https://control-system-backend.onrender.com/${user.image}`
                     : Profile
               }
               alt="Profile Full View"

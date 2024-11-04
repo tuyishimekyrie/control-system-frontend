@@ -70,7 +70,7 @@ const Sidebar: React.FC<SidebarProps> = ({ menuActive }) => {
                 <img
                   src={
                     profile?.image
-                      ? `http://localhost:4000/${profile.image}`
+                      ? `https://control-system-backend.onrender.com/${profile.image}`
                       : Profile
                   }
                   alt="Profile"
