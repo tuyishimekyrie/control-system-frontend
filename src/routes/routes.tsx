@@ -34,6 +34,7 @@ import { ParentLayout } from "../layouts/ParentLayout";
 import { SchoolLayout } from "../layouts/SchoolLayout";
 import GeoFencing from "../pages/managerpages/GeoFencing";
 import ErrorPage from "../pages/ErrorPage";
+import Help from "../pages/adminpages/Help";
 
 export const router = createBrowserRouter([
   {
@@ -81,6 +82,7 @@ export const router = createBrowserRouter([
       { path: "schools", element: <ManageSchools /> },
       { path: "parents", element: <ManageParents /> },
       { path: "location", element: <AllLocation /> },
+      { path: "help", element: <Help /> },
     ],
   },
   {
@@ -98,6 +100,7 @@ export const router = createBrowserRouter([
       { path: "add-keyword", element: <ManagerPages.AddKeyword /> },
       { path: "notifications", element: <Notification /> },
       { path: "location", element: <Location /> },
+      { path: "help", element: <ManagerPages.Help /> },
       { path: "geofencing", element: <GeoFencing /> },
     ],
   },
@@ -116,6 +119,7 @@ export const router = createBrowserRouter([
       { path: "add-keyword", element: <ParentPages.AddKeyword /> },
       { path: "notifications", element: <ParentNotification /> },
       { path: "location", element: <ParentLocation /> },
+      { path: "help", element: <ParentPages.Help /> },
     ],
   },
   {
@@ -133,6 +137,7 @@ export const router = createBrowserRouter([
       { path: "add-keyword", element: <SchoolPages.AddKeyword /> },
       { path: "notifications", element: <SchoolNotification /> },
       { path: "location", element: <SchoolLocation /> },
+      { path: "help", element: <SchoolPages.Help /> },
     ],
   },
   {

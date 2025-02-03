@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BlockFormData, Website } from "../types/BlockWebsite";
 import { responseNotifications } from "../types/notifications";
 import {
@@ -380,5 +381,52 @@ export const getUserByEmail = async (email: string): Promise<User> => {
 export const getAllLocations = async (): Promise<Location> => {
   const response = await apiClient.get("/location");
   console.log("location Data", response);
+  return response.data;
+};
+
+// FAQs
+type FaqData = {
+  question: string;
+  answer: string;
+};
+
+export const fetchFaqs = async () => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.get("/faqs/all", { headers });
+  return response.data;
+};
+
+export const createFaq = async (data: FaqData) => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  console.log("Access token:", accessToken);
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.post("/faqs", data, { headers });
+  return response.data;
+};
+
+export const updateFaq = async (id: string, data: FaqData) => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.patch(`/faqs/${id}`, data, { headers });
+  return response.data;
+};
+
+export const deleteFaq = async (id: string) => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const response = await apiClient.delete(`/faqs/${id}`, { headers });
   return response.data;
 };

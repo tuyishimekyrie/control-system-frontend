@@ -27,6 +27,8 @@ export const SchoolLayout: React.FC = () => {
         return "NOTIFICATIONS";
       case "location":
         return "LOCATION";
+      case "help":
+        return "HELP";
       default:
         return "DASHBOARD";
     }
