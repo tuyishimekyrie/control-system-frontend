@@ -78,7 +78,7 @@ const Support = () => {
                 >
                   <IoIosAddCircleOutline className="mr-2" />
                   Create FAQ
-                </button>
+                </button> // for admins only.
               ) : (
                 <button
                   className="flex items-center px-4 text-[14px] py-2 bg-green-600 text-white rounded hover:bg-green-700 ml-4"

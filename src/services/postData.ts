@@ -430,3 +430,23 @@ export const deleteFaq = async (id: string) => {
   const response = await apiClient.delete(`/faqs/${id}`, { headers });
   return response.data;
 };
+
+// Support Form Service
+
+type SupportData = {
+  email: string;
+  subject: string;
+  description: string;
+  impact: string;
+};
+
+export const submitSupportForm = async (data: SupportData) => {
+  let accessToken = localStorage.getItem("net-token") || "";
+  accessToken = accessToken.replace(/^"|"$/g, "");
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+    "Content-Type": "application/json",
+  };
+  const response = await apiClient.post("/support", data, { headers });
+  return response.data;
+};
