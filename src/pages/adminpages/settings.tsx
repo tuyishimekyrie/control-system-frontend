@@ -66,8 +66,9 @@ const Settings: React.FC = () => {
       imageData.append("file", newImage);
 
       try {
-        // @ts-ignore
+        // @ts-expect-error: updateUser may not have the correct return type
         const updatedUser = await updateUser(user.id, imageData);
+        console.log(updatedUser);
         toast.success("Image updated successfully!");
         setUser({ ...user, image: URL.createObjectURL(newImage) });
         setNewImage(null);

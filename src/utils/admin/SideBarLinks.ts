@@ -3,6 +3,7 @@ import { AiTwotoneDashboard } from "react-icons/ai";
 // import { MdMonitorHeart } from "react-icons/md";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { RiListSettingsLine } from "react-icons/ri";
+import { IoIosHelpCircleOutline } from "react-icons/io";
 import { PiUsersThree } from "react-icons/pi";
 // import { BsFilterCircle } from "react-icons/bs";
 import { VscOrganization } from "react-icons/vsc";
@@ -77,5 +78,11 @@ export const AdminSidebarLinks: SidebarLink[] = [
     name: "Location",
     icon: CiLocationOn,
     link: "/location",
+  },
+  {
+    id: 11,
+    name: "Help",
+    icon: IoIosHelpCircleOutline,
+    link: "/help",
   },
 ];

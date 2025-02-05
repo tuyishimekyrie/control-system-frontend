@@ -5,7 +5,10 @@ import { BsGraphUpArrow } from "react-icons/bs";
 import { RiListSettingsLine } from "react-icons/ri";
 import { PiUsersThree } from "react-icons/pi";
 import { BsFilterCircle } from "react-icons/bs";
-import { IoIosNotificationsOutline } from "react-icons/io";
+import {
+  IoIosHelpCircleOutline,
+  IoIosNotificationsOutline,
+} from "react-icons/io";
 import { CiLocationOn } from "react-icons/ci";
 
 export type SidebarLink = {
@@ -63,5 +66,11 @@ export const SchoolSidebarLinks: SidebarLink[] = [
     name: "Settings",
     icon: RiListSettingsLine,
     link: "/settings",
+  },
+  {
+    id: 6,
+    name: "Help",
+    icon: IoIosHelpCircleOutline,
+    link: "/help",
   },
 ];

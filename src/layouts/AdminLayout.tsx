@@ -29,6 +29,8 @@ export const AdminLayout: React.FC = () => {
         return "SCHOOLS";
       case "settings":
         return "SETTINGS";
+      case "help":
+        return "HELP";
       default:
         return "DASHBOARD";
     }
