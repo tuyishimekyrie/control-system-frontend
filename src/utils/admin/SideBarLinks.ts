@@ -10,6 +10,7 @@ import { VscOrganization } from "react-icons/vsc";
 import { CiLocationOn } from "react-icons/ci";
 import { RiParentLine } from "react-icons/ri";
 import { IoSchoolOutline } from "react-icons/io5";
+import { MdCastForEducation } from "react-icons/md";
 
 export type SidebarLink = {
   id: number;
@@ -78,6 +79,12 @@ export const AdminSidebarLinks: SidebarLink[] = [
     name: "Location",
     icon: CiLocationOn,
     link: "/location",
+  },
+  {
+    id: 11,
+    name: "Education",
+    icon: MdCastForEducation,
+    link: "/education",
   },
   {
     id: 11,
