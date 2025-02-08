@@ -34,6 +34,8 @@ import { ParentLayout } from "../layouts/ParentLayout";
 import { SchoolLayout } from "../layouts/SchoolLayout";
 import GeoFencing from "../pages/managerpages/GeoFencing";
 import ErrorPage from "../pages/ErrorPage";
+import EducationContent from "../pages/adminpages/EducationContent";
+import Education from "../components/Education";
 import Help from "../pages/adminpages/Help";
 
 export const router = createBrowserRouter([
@@ -82,6 +84,7 @@ export const router = createBrowserRouter([
       { path: "schools", element: <ManageSchools /> },
       { path: "parents", element: <ManageParents /> },
       { path: "location", element: <AllLocation /> },
+      { path: "education", element: <EducationContent /> },
       { path: "help", element: <Help /> },
     ],
   },
@@ -102,6 +105,7 @@ export const router = createBrowserRouter([
       { path: "location", element: <Location /> },
       { path: "help", element: <ManagerPages.Help /> },
       { path: "geofencing", element: <GeoFencing /> },
+      { path: "education", element: <Education /> },
     ],
   },
   {

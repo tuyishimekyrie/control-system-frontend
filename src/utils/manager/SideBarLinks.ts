@@ -1,6 +1,10 @@
 import React from "react";
 import { AiTwotoneDashboard } from "react-icons/ai";
-import { MdMonitorHeart, MdOutlineCircle } from "react-icons/md";
+import {
+  MdCastForEducation,
+  MdMonitorHeart,
+  MdOutlineCircle,
+} from "react-icons/md";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { RiListSettingsLine } from "react-icons/ri";
 import { PiUsersThree } from "react-icons/pi";
@@ -70,6 +74,12 @@ export const ManagerSidebarLinks: SidebarLink[] = [
     name: "Settings",
     icon: RiListSettingsLine,
     link: "/settings",
+  },
+  {
+    id: 6,
+    name: "education",
+    icon: MdCastForEducation,
+    link: "/education",
   },
   {
     id: 6,
