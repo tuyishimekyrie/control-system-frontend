@@ -70,13 +70,13 @@ export const ManagerSidebarLinks: SidebarLink[] = [
     link: "/geofencing",
   },
   {
-    id: 5,
+    id: 10,
     name: "Settings",
     icon: RiListSettingsLine,
     link: "/settings",
   },
   {
-    id: 6,
+    id: 11,
     name: "education",
     icon: MdCastForEducation,
     link: "/education",

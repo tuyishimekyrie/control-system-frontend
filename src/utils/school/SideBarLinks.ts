@@ -1,6 +1,6 @@
 import React from "react";
 import { AiTwotoneDashboard } from "react-icons/ai";
-import { MdMonitorHeart } from "react-icons/md";
+import { MdCastForEducation, MdMonitorHeart } from "react-icons/md";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { RiListSettingsLine } from "react-icons/ri";
 import { PiUsersThree } from "react-icons/pi";
@@ -62,10 +62,16 @@ export const SchoolSidebarLinks: SidebarLink[] = [
     link: "/location",
   },
   {
-    id: 5,
+    id: 9,
     name: "Settings",
     icon: RiListSettingsLine,
     link: "/settings",
+  },
+  {
+    id: 10,
+    name: "Education",
+    icon: MdCastForEducation,
+    link: "/education",
   },
   {
     id: 6,
