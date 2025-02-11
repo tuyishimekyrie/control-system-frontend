@@ -87,7 +87,7 @@ export const AdminSidebarLinks: SidebarLink[] = [
     link: "/education",
   },
   {
-    id: 11,
+    id: 12,
     name: "Help",
     icon: IoIosHelpCircleOutline,
     link: "/help",

@@ -72,7 +72,7 @@ export const ParentSidebarLinks: SidebarLink[] = [
     link: "/education",
   },
   {
-    id: 6,
+    id: 11,
     name: "Help",
     icon: IoIosHelpCircleOutline,
     link: "/help",

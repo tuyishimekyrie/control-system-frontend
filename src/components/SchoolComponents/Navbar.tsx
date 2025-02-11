@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { IoHelpBuoyOutline, IoNotificationsOutline } from "react-icons/io5";
 import { fetchManagerNotifications } from "../../services/postData";
 import Notifications from "./Notifications";
+import { NavLink } from "react-router-dom";
 
 interface NavbarProps {
   title: string;
@@ -26,10 +27,10 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
     >
       <h4 className="text-3xl font-semibold text-green-600">{title}</h4>
       <div className="flex items-center space-x-10">
-        <div className="flex items-center space-x-2">
+        <NavLink to="/school/help" className="flex items-center space-x-2">
           <IoHelpBuoyOutline className="text-[20px] text-gray-400" />
-          <p className="text-[14px] text-gray-400">Need Help?</p>
-        </div>
+          <span className="text-[14px] text-gray-400">Need Help?</span>
+        </NavLink>
         <IoNotificationsOutline
           className="text-[20px] text-gray-400 cursor-pointer"
           onClick={toggleNotifications}

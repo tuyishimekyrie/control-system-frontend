@@ -82,7 +82,7 @@ export const ManagerSidebarLinks: SidebarLink[] = [
     link: "/education",
   },
   {
-    id: 6,
+    id: 12,
     name: "Help",
     icon: IoIosHelpCircleOutline,
     link: "/help",
